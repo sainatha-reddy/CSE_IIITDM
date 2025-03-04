@@ -25,7 +25,7 @@
 
 ## Outreach:
 - **Workshop**: Information on workshops and seminars organized by the department.
-**Industrial Consultancy**: Details consultancy services offered to industries.
-**Gallery**: A collection of images showcasing departmental events and activities.
-**CS Club**: Information about the Computer Science Club and its initiatives.
-**CSE Moodle**: [Redirects to an internal IP address (172.16.1.173), suggesting it's accessible only within the institute's network.](http://172.16.1.173)
+## Industrial Consultancy: Details consultancy services offered to industries.
+## Gallery: A collection of images showcasing departmental events and activities.
+## CS Club: Information about the Computer Science Club and its initiatives.
+## CSE Moodle: [Redirects to an internal IP address (172.16.1.173), suggesting it's accessible only within the institute's network.](http://172.16.1.173)

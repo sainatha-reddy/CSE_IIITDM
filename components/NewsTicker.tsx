@@ -33,7 +33,7 @@ export default function NewsTicker() {
   }
 
   return (
-    <div className="bg-[#003366] text-white py-3 overflow-hidden relative group">
+    <div className="bg-[#2C4A87] py-2 relative z-40"> {/* Lower z-index than navbar */}
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center flex-grow">
@@ -45,7 +45,7 @@ export default function NewsTicker() {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -20, opacity: 0 }}
                 transition={{ duration: 0.5 }}
-                className="flex-grow"
+                className="flex-grow text-white"
                 onMouseEnter={() => setIsPaused(true)}
                 onMouseLeave={() => setIsPaused(false)}
               >

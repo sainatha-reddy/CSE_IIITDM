@@ -9,6 +9,7 @@ import AlumniFilters from "@/components/alumni/abroad/AlumniFilters"
 import AlumniGrid from "@/components/alumni/abroad/AlumniGrid"
 import GlobalImpact from "@/components/alumni/abroad/GlobalImpact"
 import { alumniData } from "@/components/alumni/abroad/AlumniData"
+import MainNav from "@/components/MainNav"
 
 export default function AlumniAbroad() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
@@ -35,6 +36,7 @@ export default function AlumniAbroad() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+      {/* <Header /> */}
       <Header />
 
       {/* Hero Section */}

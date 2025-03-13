@@ -117,7 +117,7 @@ export default function Laboratories() {
               onMouseEnter={() => setHoveredCard(lab.id)}
               onMouseLeave={() => setHoveredCard(null)}
             >
-              <Card className="h-full overflow-hidden group transition-all duration-300 shadow-md hover:shadow-xl bg-white">
+              <Card className="h-full overflow-hidden bg-[#fff] group transition-all duration-300 shadow-md hover:shadow-xl bg-white">
                 <CardHeader
                   className={`transition-colors duration-500 ${
                     hoveredCard === lab.id ? "bg-[#003366]" : "bg-gradient-to-r from-[#f5f8ff] to-white"
@@ -158,7 +158,7 @@ export default function Laboratories() {
       <AnimatePresence>
         {selectedLab && (
           <Dialog open={!!selectedLab} onOpenChange={() => setSelectedLab(null)}>
-            <DialogContent className="max-w-4xl">
+            <DialogContent className="max-w-4xl bg-[#f5f8ff]">
               <DialogHeader>
                 <DialogTitle className="text-3xl font-bold flex items-center text-[#003366]">
                   <div className="w-12 h-12 bg-[#f5f8ff] rounded-full flex items-center justify-center text-[#003366] mr-3">

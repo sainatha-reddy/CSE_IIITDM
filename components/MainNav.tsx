@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
@@ -137,41 +138,26 @@ export default function MainNav() {
     const [isHovered, setIsHovered] = useState(false)
     const itemRef = useRef(null)
 
-    // Check if any subitem is active
-    const hasActiveChild =
-      hasSubItems &&
-      item.subItems.some(
-        (subItem) =>
-          isActivePath(subItem.href) ||
-          (subItem.subItems && subItem.subItems.some((grandChild) => isActivePath(grandChild.href))),
-      )
-
-    // Determine if dropdown should be open
-    const isDropdownOpen = mobile
-      ? activeDropdown === item.label
-      : (level === 0 ? isHovered : activeDropdown === item.label) || (hasActiveChild && level === 0 && !mobile)
-
     const handleMouseEnter = () => {
-      if (!mobile && level === 0) {
+      if (!mobile) {
         if (dropdownTimerRef.current) clearTimeout(dropdownTimerRef.current)
         setIsHovered(true)
+        setActiveDropdown(item.label)
       }
     }
 
     const handleMouseLeave = () => {
-      if (!mobile && level === 0) {
+      if (!mobile) {
         dropdownTimerRef.current = setTimeout(() => {
-          // Only close if we're still not hovering over the item or its dropdown
-          if (itemRef.current && !itemRef.current.matches(":hover")) {
-            setIsHovered(false)
-          }
-        }, 100) // Reduce from 300ms to 100ms for faster response
+          setIsHovered(false)
+          setActiveDropdown(null)
+        }, 50)
       }
     }
 
     return (
       <li
-        className={`relative ${mobile ? "w-full" : ""}`}
+        className={`nav-item relative ${mobile ? "w-full" : ""}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         ref={itemRef}
@@ -179,85 +165,40 @@ export default function MainNav() {
         {hasSubItems ? (
           <div className="w-full">
             <button
-              onClick={() => handleDropdownToggle(item.label)}
-              className={`flex items-center justify-between w-full px-3 py-2 text-sm font-medium ${
-                isActive || hasActiveChild
-                  ? "text-white bg-[#003366]"
-                  : "text-[#003366] hover:text-[#6495ED] hover:bg-blue-50"
-              } rounded-md transition-all duration-300 ${mobile ? "px-4" : ""}`}
-              aria-expanded={isDropdownOpen}
-              aria-haspopup="true"
+              onClick={() => mobile && handleDropdownToggle(item.label)}
+              className={`flex items-center justify-between w-full px-4 py-2 text-sm font-medium ${
+                isActive ? "text-white bg-[#003366]" : "text-[#003366] hover:text-[#6495ED] hover:bg-blue-50"
+              } rounded-md transition-colors duration-200`}
             >
               {item.label}
-              <ChevronDown
-                className={`ml-1 h-4 w-4 transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""}`}
-              />
+              <ChevronDown className={`ml-1 h-4 w-4 transition-transform duration-200 ${isHovered ? "rotate-180" : ""}`} />
             </button>
 
-            <AnimatePresence>
-              {isDropdownOpen && (
-                <motion.ul
-                  initial={{ opacity: 0, y: -5, height: 0 }}
-                  animate={{ opacity: 1, y: 0, height: "auto" }}
-                  exit={{ opacity: 0, height: 0, transition: { duration: 0.2 } }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                  className={`${
-                    mobile
-                      ? "mt-1 ml-4 overflow-hidden"
-                      : "absolute left-0 mt-1 w-48 bg-white rounded-md shadow-lg py-1 z-20 border border-[#B0B0B0] overflow-hidden"
-                  }`}
-                  role="menu"
-                  aria-orientation="vertical"
-                  aria-labelledby="menu-button"
-                  onMouseEnter={() => {
-                    if (!mobile && level === 0) {
-                      if (dropdownTimerRef.current) clearTimeout(dropdownTimerRef.current)
-                      setIsHovered(true)
-                    }
-                  }}
-                  onMouseLeave={() => {
-                    if (!mobile && level === 0) {
-                      dropdownTimerRef.current = setTimeout(() => {
-                        setIsHovered(false)
-                      }, 100) // Reduce from 300ms to 100ms
-                    }
-                  }}
-                >
-                  {item.subItems.map((subItem) =>
-                    subItem.subItems && subItem.subItems.length > 0 ? (
-                      <SubNavItem
-                        key={subItem.label}
-                        item={subItem}
-                        mobile={mobile}
-                        level={level + 1}
-                        parentOpen={isDropdownOpen}
-                      />
-                    ) : (
-                      <li key={subItem.label} role="none">
-                        <Link
-                          href={subItem.href}
-                          className={`block px-3 py-2 text-sm font-medium ${
-                            isActivePath(subItem.href)
-                              ? "text-white bg-[#003366]"
-                              : "text-[#003366] hover:text-[#6495ED] hover:bg-blue-50"
-                          } rounded-md transition-all duration-300 ${mobile ? "px-4" : ""}`}
-                          role="menuitem"
-                        >
-                          {subItem.label}
-                        </Link>
-                      </li>
-                    ),
-                  )}
-                </motion.ul>
-              )}
-            </AnimatePresence>
+            {isHovered && (
+              <ul className="nav-dropdown active">
+                {item.subItems.map((subItem) =>
+                  subItem.subItems ? (
+                    <SubNavItem key={subItem.label} item={subItem} mobile={mobile} level={level + 1} />
+                  ) : (
+                    <li key={subItem.label}>
+                      <Link
+                        href={subItem.href}
+                        className="block px-4 py-2 text-sm text-[#003366] hover:bg-blue-50 hover:text-[#6495ED]"
+                      >
+                        {subItem.label}
+                      </Link>
+                    </li>
+                  )
+                )}
+              </ul>
+            )}
           </div>
         ) : (
           <Link
             href={item.href}
-            className={`block px-3 py-2 text-sm font-medium ${
+            className={`block px-4 py-2 text-sm font-medium ${
               isActive ? "text-white bg-[#003366]" : "text-[#003366] hover:text-[#6495ED] hover:bg-blue-50"
-            } rounded-md transition-all duration-300 ${mobile ? "px-4" : ""}`}
+            } rounded-md transition-colors duration-200`}
           >
             {item.label}
           </Link>
@@ -266,17 +207,12 @@ export default function MainNav() {
     )
   }
 
-  const SubNavItem = ({ item, mobile = false, level = 1, parentOpen = false }) => {
+  // Update SubNavItem component to return menu items instead of li
+  const SubNavItem = ({ item, mobile = false, level = 1 }) => {
     const hasSubItems = item.subItems && item.subItems.length > 0
     const isActive = isActivePath(item.href)
     const [isHovered, setIsHovered] = useState(false)
     const itemRef = useRef(null)
-
-    // Check if any subitem is active
-    const hasActiveChild = hasSubItems && item.subItems.some((subItem) => isActivePath(subItem.href))
-
-    // Determine if dropdown should be open
-    const isDropdownOpen = mobile ? activeSubDropdown === item.label : isHovered || (hasActiveChild && !mobile)
 
     const handleMouseEnter = () => {
       if (!mobile) {
@@ -288,11 +224,8 @@ export default function MainNav() {
     const handleMouseLeave = () => {
       if (!mobile) {
         subDropdownTimerRef.current = setTimeout(() => {
-          // Only close if we're still not hovering over the item or its dropdown
-          if (itemRef.current && !itemRef.current.matches(":hover")) {
-            setIsHovered(false)
-          }
-        }, 100) // Reduce from 300ms to 100ms
+          setIsHovered(false)
+        }, 100)
       }
     }
 
@@ -304,65 +237,36 @@ export default function MainNav() {
         ref={itemRef}
       >
         {hasSubItems ? (
-          <div className="w-full">
+          <>
             <button
               onClick={() => handleSubDropdownToggle(item.label)}
               className={`flex items-center justify-between w-full px-3 py-2 text-sm font-medium ${
-                isActive || hasActiveChild
-                  ? "text-white bg-[#003366]"
-                  : "text-[#003366] hover:text-[#6495ED] hover:bg-blue-50"
+                isActive ? "text-white bg-[#003366]" : "text-[#003366] hover:text-[#6495ED] hover:bg-blue-50"
               } rounded-md transition-all duration-300 ${mobile ? "px-4" : ""}`}
             >
               {item.label}
-              <ChevronDown
-                className={`ml-1 h-4 w-4 transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""}`}
-              />
+              <ChevronDown className={`ml-1 h-4 w-4 transition-transform duration-300 ${isHovered ? "rotate-180" : ""}`} />
             </button>
 
-            <AnimatePresence>
-              {isDropdownOpen && (
-                <motion.ul
-                  initial={{ opacity: 0, x: -5, height: 0 }}
-                  animate={{ opacity: 1, x: 0, height: "auto" }}
-                  exit={{ opacity: 0, height: 0, transition: { duration: 0.2 } }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                  className={`${
-                    mobile
-                      ? "mt-1 ml-4 overflow-hidden"
-                      : "absolute left-full top-0 w-48 bg-white rounded-md shadow-lg py-1 z-30 border border-[#B0B0B0] overflow-hidden"
-                  }`}
-                  onMouseEnter={() => {
-                    if (!mobile) {
-                      if (subDropdownTimerRef.current) clearTimeout(subDropdownTimerRef.current)
-                      setIsHovered(true)
-                    }
-                  }}
-                  onMouseLeave={() => {
-                    if (!mobile) {
-                      subDropdownTimerRef.current = setTimeout(() => {
-                        setIsHovered(false)
-                      }, 100) // Reduce from 300ms to 100ms
-                    }
-                  }}
-                >
-                  {item.subItems.map((subItem) => (
-                    <li key={subItem.label}>
-                      <Link
-                        href={subItem.href}
-                        className={`block px-3 py-2 text-sm font-medium ${
-                          isActivePath(subItem.href)
-                            ? "text-white bg-[#003366]"
-                            : "text-[#003366] hover:text-[#6495ED] hover:bg-blue-50"
-                        } rounded-md transition-all duration-300 ${mobile ? "px-4" : ""}`}
-                      >
-                        {subItem.label}
-                      </Link>
-                    </li>
-                  ))}
-                </motion.ul>
-              )}
-            </AnimatePresence>
-          </div>
+            {isHovered && (
+              <ul className="nav-subdropdown">
+                {item.subItems.map((subItem) => (
+                  <li key={subItem.label}>
+                    <Link
+                      href={subItem.href}
+                      className={`block px-3 py-2 text-sm font-medium ${
+                        isActivePath(subItem.href)
+                          ? "text-white bg-[#003366]"
+                          : "text-[#003366] hover:text-[#6495ED] hover:bg-blue-50"
+                      } rounded-md transition-all duration-300 ${mobile ? "px-4" : ""}`}
+                    >
+                      {subItem.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
         ) : (
           <Link
             href={item.href}
@@ -386,71 +290,91 @@ export default function MainNav() {
   }, [])
 
   return (
-    <nav className="relative z-10" ref={navRef}>
-      {/* Desktop Navigation */}
-      <div className="hidden lg:block">
-        <ul className="flex space-x-1 items-center">
-          {navItems.map((item) => (
-            <NavItem key={item.label} item={item} />
-          ))}
-        </ul>
-      </div>
-
-      {/* Mobile Navigation */}
-      <div className="lg:hidden">
-        <button
-          onClick={toggleMobileMenu}
-          className="text-[#003366] hover:text-[#6495ED] focus:outline-none transition-colors duration-300 p-2 rounded-md"
-          aria-label="Toggle mobile menu"
-          aria-expanded={mobileMenuOpen}
-        >
-          {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
-
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, x: -100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="fixed top-20 left-0 bottom-0 w-72 bg-white shadow-lg overflow-y-auto border-r border-[#B0B0B0] z-50"
-            >
-              <div className="py-4 px-2">
-                <div className="flex items-center justify-between px-4 mb-4">
-                  <h3 className="text-[#003366] font-bold text-lg">Menu</h3>
-                  <button
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="text-[#003366] hover:text-[#6495ED] focus:outline-none transition-colors duration-300"
-                    aria-label="Close menu"
-                  >
-                    <X className="h-5 w-5" />
-                  </button>
-                </div>
-                <div className="border-b border-[#B0B0B0] mb-4"></div>
-                <ul className="py-2 px-2 space-y-1">
-                  {navItems.map((item) => (
-                    <NavItem key={item.label} item={item} mobile={true} />
-                  ))}
-                </ul>
+    <>
+      <nav 
+        className="fixed top-0 left-0 right-0 bg-white shadow-md z-50" 
+        ref={navRef}
+      >
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo and Title */}
+            <Link href="/" className="flex items-center space-x-4">
+              <Image 
+                src="/assets/image.png" 
+                alt="IIITDM Kancheepuram Logo" 
+                width={45} 
+                height={45} 
+                className="object-contain"
+              />
+              <div className="hidden md:block">
+                <h1 className="text-lg font-bold text-[#003366]">IIITDM Kancheepuram</h1>
+                <p className="text-xs text-gray-600">Department of Computer Science & Engineering</p>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </Link>
 
-        {/* Overlay to close mobile menu when clicking outside */}
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-black/20 z-40"
-            onClick={() => setMobileMenuOpen(false)}
-          />
-        )}
-      </div>
-    </nav>
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex">
+              <ul className="flex items-center space-x-2">
+                {navItems.map((item) => (
+                  <NavItem key={item.label} item={item} />
+                ))}
+              </ul>
+            </div>
+            
+            {/* Mobile Menu Button */}
+            <div className="lg:hidden">
+              <button
+                onClick={toggleMobileMenu}
+                className="text-[#003366] p-2 rounded-md hover:bg-blue-50"
+              >
+                {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Update the dropdown styles */}
+        <style jsx global>{`
+          .nav-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 200px;
+            background: white;
+            border-radius: 0.375rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
+            transition: all 0.2s ease;
+          }
+
+          .nav-dropdown.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+          }
+
+          .nav-subdropdown {
+            position: absolute;
+            left: 100%;
+            top: 0;
+            min-width: 200px;
+            background: white;
+            border-radius: 0.375rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+          }
+
+          .nav-item:hover > .nav-dropdown {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+          }
+        `}</style>
+      </nav>
+      {/* Add a spacer div to prevent content overlap */}
+      <div className="h-20"></div>
+    </>
   )
 }
 

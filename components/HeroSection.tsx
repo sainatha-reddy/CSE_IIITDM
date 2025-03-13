@@ -20,6 +20,7 @@ export default function HeroSection() {
       description:
         "Our curriculum combines theoretical foundations with hands-on experience in cutting-edge technologies, preparing students for leadership in the digital era.",
       image: "/assets/a1.jpg",
+      image1:"/assets/a2.jpg",
       color: "from-blue-600 to-indigo-700",
       accent: "bg-blue-500",
       stats: [
@@ -34,7 +35,8 @@ export default function HeroSection() {
       subtitle: "Advancing the Frontiers of Technology",
       description:
         "Our faculty and students collaborate on groundbreaking research that addresses real-world challenges across AI, cybersecurity, data science, and emerging technologies.",
-      image: "a1.jpg",
+      image: "/assets/a7.jpg",
+      image1:"/assets/a2.jpg",
       color: "from-purple-600 to-indigo-700",
       accent: "bg-purple-500",
       stats: [
@@ -49,7 +51,8 @@ export default function HeroSection() {
       subtitle: "Bridging Academia and Enterprise",
       description:
         "We partner with leading tech companies to create opportunities for our students and drive innovation through joint research initiatives and technology transfer programs.",
-      image: "/assets/innovation-hub.jpg",
+      image: "/assets/a8.jpg",
+      image1:"/assets/a2.jpg",
       color: "from-cyan-600 to-blue-700",
       accent: "bg-cyan-500",
       stats: [
@@ -251,7 +254,7 @@ export default function HeroSection() {
                     {/* Main feature image */}
                     <div className="relative h-[450px] w-full rounded-lg overflow-hidden border border-white/20 shadow-lg">
                       <Image
-                        src={`/assets/${sections[activeSection].id}-feature.jpg`}
+                        src={sections[activeSection].image1 || "/placeholder.svg"}
                         alt={sections[activeSection].title}
                         fill
                         className="object-cover"

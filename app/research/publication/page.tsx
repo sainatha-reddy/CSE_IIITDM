@@ -631,7 +631,7 @@ export default function PublicationsPage() {
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <Header />
 
-      <main className="pt-24 pb-20">
+      <main className=" pb-20">
         <HeroSection />
 
         <div className="container mx-auto px-4 mt-12">

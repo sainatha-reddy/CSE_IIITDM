@@ -137,7 +137,7 @@ export default function LectureNotesPage() {
     <div className="min-h-screen flex flex-col">
       <Header />
 
-      <main className="flex-grow pt-20">
+      <main className="">
         <HeroSection />
 
         <section id="results-section" className="py-16">

@@ -328,7 +328,7 @@ export default function HeroSection() {
           className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30 flex flex-col items-center cursor-pointer"
           onClick={scrollToContent}
         >
-          <span className="text-white/70 text-xs mb-1.5 px-3 py-1 rounded-md bg-white/10">Scroll to explore</span>
+          {/* <span className="text-white/70 text-xs mb-1.5 px-3 py-1 rounded-md bg-white/10">Scroll to explore</span> */}
           <div className="w-7 h-7 rounded-md bg-white/10 flex items-center justify-center">
             <ChevronDown className="h-4 w-4 text-white" />
           </div>

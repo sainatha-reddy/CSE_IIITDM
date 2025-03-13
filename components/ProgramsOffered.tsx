@@ -144,7 +144,7 @@ export default function ProgramsOffered() {
       <AnimatePresence>
         {selectedProgram && (
           <Dialog open={!!selectedProgram} onOpenChange={() => setSelectedProgram(null)}>
-            <DialogContent className="max-w-3xl">
+            <DialogContent className="max-w-3xl bg-white">
               <DialogHeader>
                 <DialogTitle className="text-3xl font-bold flex items-center text-[#003366]">
                   <div className="w-12 h-12 bg-[#f5f8ff] rounded-full flex items-center justify-center text-[#003366] mr-3">

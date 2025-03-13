@@ -337,7 +337,7 @@ export default function FacultyPage() {
 
         {/* Faculty Detail Dialog */}
         <Dialog open={!!selectedFaculty} onOpenChange={() => setSelectedFaculty(null)}>
-          <DialogContent className="max-w-4xl">
+          <DialogContent className="max-w-4xl bg-white">
             <FacultyDetail faculty={selectedFaculty} />
           </DialogContent>
         </Dialog>

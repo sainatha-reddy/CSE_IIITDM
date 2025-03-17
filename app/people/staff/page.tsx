@@ -9,7 +9,7 @@ import StaffCard from "@/components/staff/StaffCard"
 import StaffList from "@/components/staff/StaffList"
 import StaffFilters from "@/components/staff/StaffFilters"
 import StaffDetail from "@/components/staff/StaffDetail"
-import StaffStats from "@/components/staff/StaffStats"
+//import StaffStats from "@/components/staff/StaffStats"
 import StaffPagination from "@/components/staff/StaffPagination"
 import { staffData, type StaffMember } from "@/components/staff/StaffData"
 import Link from "next/link"
@@ -124,7 +124,7 @@ export default function StaffPage() {
                 className="bg-white/10 backdrop-blur-sm rounded-lg p-4 flex items-center gap-3 border border-white/20"
               >
                 <Building2 className="h-5 w-5 text-white" />
-                <span className="text-white font-medium">4 Departments</span>
+                <span className="text-white font-medium">Technical Support</span>
               </motion.div>
             </div>
           </motion.div>
@@ -142,12 +142,7 @@ export default function StaffPage() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-8 bg-white">
-        <div className="container mx-auto px-4">
-          <StaffStats />
-        </div>
-      </section>
+      
 
       {/* Staff Listing Section */}
       <section className="py-12">

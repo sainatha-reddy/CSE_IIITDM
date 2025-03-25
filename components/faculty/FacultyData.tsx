@@ -512,7 +512,7 @@ export const facultyData = [
     id: 11,
     name: "Dr. Rahul Raman",
     position: "Assistant Professor",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "https://mis.iiitdm.ac.in/Profile/images/Profile/rahul.jpeg",
     interests: [
       "Computer Vision",
       "Image Processing",
@@ -544,7 +544,7 @@ export const facultyData = [
     id: 12,
     name: "Dr. Sadagopan N",
     position: "Associate Professor",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "https://mis.iiitdm.ac.in/Profile/images/Profile/sadagopan.jpeg",
     interests: [
       "Graph theory & Combinatorics",
       "Data Structures & Algorithms",
@@ -575,7 +575,7 @@ export const facultyData = [
     id: 13,
     name: "Dr. Sanjeet Kumar Nayak",
     position: "Assistant Professor",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "https://mis.iiitdm.ac.in/Profile/images/Profile/sanjeetn.jpeg",
     interests: [
       "IoT and Cloud Computing",
       "Applied Cryptography",
@@ -702,7 +702,7 @@ export const facultyData = [
     id: 16,
     name: "Dr. Vijayakumar S",
     position: "Assistant Professor",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "https://mis.iiitdm.ac.in/Profile/images/Profile/vijaycse.jpeg",
     interests: ["Artificial Intelligence", "Machine Learning", "Natural Language Processing"],
     email: "vijayakumar@iiitdm.ac.in",
     phone: "+91-XXXXXXXXXX",
@@ -727,7 +727,7 @@ export const facultyData = [
     id: 17,
     name: "Dr. Umarani Jayaraman",
     position: "Assistant Professor",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "https://mis.iiitdm.ac.in/Profile/images/Profile/umarani.jpeg",
     interests: [
       "Biometrics",
       "Pattern Recognition",

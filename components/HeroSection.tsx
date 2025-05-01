@@ -9,6 +9,7 @@ import { ChevronRight, ArrowRight, ExternalLink, ChevronDown } from "lucide-reac
 export default function HeroSection() {
   const [activeSection, setActiveSection] = useState(0)
   const [direction, setDirection] = useState(1) // 1 for right, -1 for left
+  const [isMounted, setIsMounted] = useState(false) // Track if the component has mounted
   const heroRef = useRef(null)
 
   // Sections data
@@ -20,7 +21,7 @@ export default function HeroSection() {
       description:
         "Our curriculum combines theoretical foundations with hands-on experience in cutting-edge technologies, preparing students for leadership in the digital era.",
       image: "/assets/a1.jpg",
-      image1:"/assets/a2.jpg",
+      image1: "/assets/a2.jpg",
       color: "from-blue-600 to-indigo-700",
       accent: "bg-blue-500",
       stats: [
@@ -36,7 +37,7 @@ export default function HeroSection() {
       description:
         "Our faculty and students collaborate on groundbreaking research that addresses real-world challenges across AI, cybersecurity, data science, and emerging technologies.",
       image: "/assets/a7.jpg",
-      image1:"/assets/a2.jpg",
+      image1: "/assets/a2.jpg",
       color: "from-purple-600 to-indigo-700",
       accent: "bg-purple-500",
       stats: [
@@ -52,7 +53,7 @@ export default function HeroSection() {
       description:
         "We partner with leading tech companies to create opportunities for our students and drive innovation through joint research initiatives and technology transfer programs.",
       image: "/assets/a8.jpg",
-      image1:"/assets/a2.jpg",
+      image1: "/assets/a2.jpg",
       color: "from-cyan-600 to-blue-700",
       accent: "bg-cyan-500",
       stats: [
@@ -65,6 +66,8 @@ export default function HeroSection() {
 
   // Auto-rotate sections
   useEffect(() => {
+    setIsMounted(true) // Set to true after component mounts
+
     const interval = setInterval(() => {
       setDirection(1) // Always move forward for auto-rotation
       setActiveSection((prev) => (prev + 1) % sections.length)
@@ -101,6 +104,11 @@ export default function HeroSection() {
       x: direction > 0 ? "-100%" : "100%",
       opacity: 0,
     }),
+  }
+
+  // Ensure the component renders only on the client-side
+  if (!isMounted) {
+    return null
   }
 
   return (
@@ -337,4 +345,3 @@ export default function HeroSection() {
     </div>
   )
 }
-

@@ -8,7 +8,7 @@ import Footer from "@/components/Footer"
 import StaffCard from "@/components/staff/StaffCard"
 import StaffList from "@/components/staff/StaffList"
 import StaffFilters from "@/components/staff/StaffFilters"
-import StaffDetail from "@/components/staff/StaffDetail"
+//import StaffDetail from "@/components/staff/StaffDetail"
 //import StaffStats from "@/components/staff/StaffStats"
 import StaffPagination from "@/components/staff/StaffPagination"
 import { staffData, type StaffMember } from "@/components/staff/StaffData"
@@ -19,7 +19,6 @@ export default function StaffPage() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedPosition, setSelectedPosition] = useState("All Positions")
-  const [selectedDepartment, setSelectedDepartment] = useState("All Departments")
   const [selectedStaff, setSelectedStaff] = useState<StaffMember | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -42,9 +41,8 @@ export default function StaffPage() {
       staff.department.toLowerCase().includes(searchQuery.toLowerCase())
 
     const matchesPosition = selectedPosition === "All Positions" || staff.position === selectedPosition
-    const matchesDepartment = selectedDepartment === "All Departments" || staff.department === selectedDepartment
 
-    return matchesSearch && matchesPosition && matchesDepartment
+    return matchesSearch && matchesPosition
   })
 
   // Calculate pagination
@@ -55,7 +53,7 @@ export default function StaffPage() {
   // Reset to first page when filters change
   useEffect(() => {
     setCurrentPage(1)
-  }, [searchQuery, selectedPosition, selectedDepartment])
+  }, [searchQuery, selectedPosition])
 
   // Handle staff selection and dialog
   const handleStaffClick = (staff: StaffMember) => {
@@ -153,8 +151,6 @@ export default function StaffPage() {
             setSearchQuery={setSearchQuery}
             selectedPosition={selectedPosition}
             setSelectedPosition={setSelectedPosition}
-            selectedDepartment={selectedDepartment}
-            setSelectedDepartment={setSelectedDepartment}
             viewMode={viewMode}
             setViewMode={setViewMode}
             filteredCount={filteredStaff.length}
@@ -198,7 +194,6 @@ export default function StaffPage() {
                   onClick={() => {
                     setSearchQuery("")
                     setSelectedPosition("All Positions")
-                    setSelectedDepartment("All Departments")
                   }}
                   className="px-4 py-2 bg-[#003366] text-white rounded-md hover:bg-[#00264d] transition-colors"
                 >
@@ -242,11 +237,11 @@ export default function StaffPage() {
       </section>
 
       {/* Staff Detail Dialog */}
-      <AnimatePresence>
+      {/* <AnimatePresence>
         {isDialogOpen && (
           <StaffDetail staff={selectedStaff} isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} />
         )}
-      </AnimatePresence>
+      </AnimatePresence> */}
 
       {/* Footer */}
       <Footer />

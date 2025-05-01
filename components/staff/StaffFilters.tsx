@@ -12,8 +12,6 @@ interface StaffFiltersProps {
   setSearchQuery: (query: string) => void
   selectedPosition: string
   setSelectedPosition: (position: string) => void
-  selectedDepartment: string
-  setSelectedDepartment: (department: string) => void
   viewMode: "grid" | "list"
   setViewMode: (mode: "grid" | "list") => void
   filteredCount: number
@@ -29,15 +27,13 @@ const positionFilters = [
   "Junior Technician",
 ]
 
-const departmentFilters = ["All Departments", "Computer Science", "Electronics", "Mechanical", "Design"]
+//const departmentFilters = ["All Departments", "Computer Science", "Electronics", "Mechanical", "Design"]
 
 export default function StaffFilters({
   searchQuery,
   setSearchQuery,
   selectedPosition,
   setSelectedPosition,
-  selectedDepartment,
-  setSelectedDepartment,
   viewMode,
   setViewMode,
   filteredCount,
@@ -126,7 +122,7 @@ export default function StaffFilters({
               </div>
 
               {/* Department Filter */}
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Department</label>
                 <div className="flex flex-wrap gap-2">
                   {departmentFilters.map((department) => (
@@ -142,7 +138,7 @@ export default function StaffFilters({
                     </Badge>
                   ))}
                 </div>
-              </div>
+              </div> */}
             </div>
           </motion.div>
         )}

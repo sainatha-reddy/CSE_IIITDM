@@ -95,7 +95,7 @@ export default function StaffDetail({ staff, isOpen, onClose }: StaffDetailProps
                   <p className="text-gray-600">{staff.bio}</p>
                 </div>
 
-                <div className="mb-6">
+                {/* <div className="mb-6">
                   <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center">
                     <Briefcase className="h-5 w-5 mr-2 text-[#003366]" />
                     Responsibilities
@@ -108,9 +108,9 @@ export default function StaffDetail({ staff, isOpen, onClose }: StaffDetailProps
                       </li>
                     ))}
                   </ul>
-                </div>
+                </div> */}
 
-                <div className="mb-6">
+                {/* <div className="mb-6">
                   <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center">
                     <GraduationCap className="h-5 w-5 mr-2 text-[#003366]" />
                     Education
@@ -124,9 +124,9 @@ export default function StaffDetail({ staff, isOpen, onClose }: StaffDetailProps
                       </div>
                     ))}
                   </div>
-                </div>
+                </div> */}
 
-                <div className="mb-6">
+                {/* <div className="mb-6">
                   <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center">
                     <Briefcase className="h-5 w-5 mr-2 text-[#003366]" />
                     Experience
@@ -140,7 +140,7 @@ export default function StaffDetail({ staff, isOpen, onClose }: StaffDetailProps
                       </div>
                     ))}
                   </div>
-                </div>
+                </div> */}
               </div>
 
               <div>
@@ -169,7 +169,7 @@ export default function StaffDetail({ staff, isOpen, onClose }: StaffDetailProps
                   </div>
                 </div>
 
-                <div className="bg-gray-50 rounded-lg p-4 mb-6">
+                {/* <div className="bg-gray-50 rounded-lg p-4 mb-6">
                   <h3 className="text-lg font-semibold text-gray-800 mb-3">Skills</h3>
                   <div className="flex flex-wrap gap-2">
                     {staff.skills.map((skill, index) => (
@@ -181,9 +181,9 @@ export default function StaffDetail({ staff, isOpen, onClose }: StaffDetailProps
                       </span>
                     ))}
                   </div>
-                </div>
+                </div> */}
 
-                <div className="bg-gray-50 rounded-lg p-4">
+                {/* <div className="bg-gray-50 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-gray-800 mb-3">Projects</h3>
                   <div className="space-y-3">
                     {staff.projects.map((project, index) => (
@@ -193,7 +193,7 @@ export default function StaffDetail({ staff, isOpen, onClose }: StaffDetailProps
                       </div>
                     ))}
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

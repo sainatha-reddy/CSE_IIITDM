@@ -14,6 +14,12 @@ const news = [
 export default function NewsTicker() {
   const [currentNews, setCurrentNews] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
+  const [isMounted, setIsMounted] = useState(false) // Track if the component has mounted
+
+  // Set isMounted to true after component mounts
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   useEffect(() => {
     if (!isPaused) {
@@ -30,6 +36,11 @@ export default function NewsTicker() {
 
   const handleNext = () => {
     setCurrentNews((prev) => (prev + 1) % news.length)
+  }
+
+  // Ensure the component renders only on the client-side
+  if (!isMounted) {
+    return null
   }
 
   return (
@@ -74,4 +85,3 @@ export default function NewsTicker() {
     </div>
   )
 }
-

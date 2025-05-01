@@ -14,9 +14,9 @@ const navItems = [
     href: "/teaching",
     subItems: [
       { label: "Overview", href: "/teaching/overview" },
-      { label: "Curriculum", href: "https://www.iiitdm.ac.in/students/existing-students/curriculum-info",target:"__blank" },
+      { label: "Curriculum", href: "https://www.iiitdm.ac.in/students/existing-students/curriculum-info", target: "__blank" },
       { label: "Online Electives", href: "/teaching/online-electives" },
-      { label: "Time Table", href: "https://www.iiitdm.ac.in/students/existing-students/time-table",target:"__blank" },
+      { label: "Time Table", href: "https://www.iiitdm.ac.in/students/existing-students/time-table", target: "__blank" },
       { label: "Lecture Notes", href: "/teaching/lecture-notes" },
       { label: "Best Projects", href: "/teaching/best-projects" },
     ],
@@ -27,7 +27,7 @@ const navItems = [
     subItems: [
       { label: "Faculty", href: "/people/faculty" },
       { label: "Staff", href: "/people/staff" },
-      { label: "Research Scholars", href: "https://www.iiitdm.ac.in/people/research-scholars/cse" ,target:"__blank"},
+      { label: "Research Scholars", href: "https://www.iiitdm.ac.in/people/research-scholars/cse", target: "__blank" },
       {
         label: "Alumni",
         href: "/people/alumni",
@@ -68,10 +68,15 @@ export default function MainNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const [activeSubDropdown, setActiveSubDropdown] = useState<string | null>(null)
+  const [isMounted, setIsMounted] = useState(false) // Track if component has mounted
   const navRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
   const dropdownTimerRef = useRef<NodeJS.Timeout | null>(null)
   const subDropdownTimerRef = useRef<NodeJS.Timeout | null>(null)
+
+  useEffect(() => {
+    setIsMounted(true) // Set isMounted to true after component mounts
+  }, [])
 
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen)
 
@@ -133,10 +138,11 @@ export default function MainNav() {
   }, [])
 
   const NavItem = ({ item, mobile = false, level = 0 }) => {
-    const hasSubItems = item.subItems && item.subItems.length > 0
-    const isActive = isActivePath(item.href)
     const [isHovered, setIsHovered] = useState(false)
     const itemRef = useRef(null)
+
+    // Only render on client side after component mounts
+    if (!isMounted) return null
 
     const handleMouseEnter = () => {
       if (!mobile) {
@@ -154,6 +160,9 @@ export default function MainNav() {
         }, 50)
       }
     }
+
+    const hasSubItems = item.subItems && item.subItems.length > 0
+    const isActive = isActivePath(item.href)
 
     return (
       <li
@@ -210,9 +219,10 @@ export default function MainNav() {
   // Update SubNavItem component to return menu items instead of li
   const SubNavItem = ({ item, mobile = false, level = 1 }) => {
     const hasSubItems = item.subItems && item.subItems.length > 0
-    const isActive = isActivePath(item.href)
     const [isHovered, setIsHovered] = useState(false)
     const itemRef = useRef(null)
+
+    if (!isMounted) return null
 
     const handleMouseEnter = () => {
       if (!mobile) {
@@ -281,7 +291,6 @@ export default function MainNav() {
     )
   }
 
-  // Add this useEffect for proper cleanup
   useEffect(() => {
     return () => {
       if (dropdownTimerRef.current) clearTimeout(dropdownTimerRef.current)
@@ -291,10 +300,7 @@ export default function MainNav() {
 
   return (
     <>
-      <nav 
-        className="fixed top-0 left-0 right-0 bg-white shadow-md z-50" 
-        ref={navRef}
-      >
+      <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-50" ref={navRef}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             {/* Logo and Title */}
@@ -320,7 +326,7 @@ export default function MainNav() {
                 ))}
               </ul>
             </div>
-            
+
             {/* Mobile Menu Button */}
             <div className="lg:hidden">
               <button
@@ -377,4 +383,3 @@ export default function MainNav() {
     </>
   )
 }
-

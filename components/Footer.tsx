@@ -1,11 +1,22 @@
 "use client"
-
+import React from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { Facebook, Twitter, Linkedin, Instagram, Youtube, Mail, Phone, MapPin, ExternalLink } from "lucide-react"
 
 export default function Footer() {
+  const [isMounted, setIsMounted] = React.useState(false)
+
+  // Set isMounted to true after component mounts
+  React.useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  if (!isMounted) {
+    return null // Prevent rendering during SSR
+  }
+
   const currentYear = new Date().getFullYear()
 
   return (
@@ -185,4 +196,3 @@ export default function Footer() {
     </footer>
   )
 }
-

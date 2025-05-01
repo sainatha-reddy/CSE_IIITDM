@@ -162,7 +162,7 @@ export default function MainNav() {
     }
 
     const hasSubItems = item.subItems && item.subItems.length > 0
-    const isActive = isActivePath(item.href)
+    const isActive = isActivePath(item.href)  // Fix applied here
 
     return (
       <li
@@ -216,7 +216,6 @@ export default function MainNav() {
     )
   }
 
-  // Update SubNavItem component to return menu items instead of li
   const SubNavItem = ({ item, mobile = false, level = 1 }) => {
     const hasSubItems = item.subItems && item.subItems.length > 0
     const [isHovered, setIsHovered] = useState(false)
@@ -238,6 +237,8 @@ export default function MainNav() {
         }, 100)
       }
     }
+
+    const isActive = isActivePath(item.href)  // Fix applied here
 
     return (
       <li

@@ -32,7 +32,7 @@ export default function FacultyPage() {
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 9
+  const itemsPerPage = 19 // No. of FACULTY MEMBERS TO BE DISPLAYED ON THE PAGE
 
   // Refs for scroll animations
   const heroRef = useRef(null)

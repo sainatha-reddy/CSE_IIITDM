@@ -22,7 +22,7 @@ export default function StaffCard({ staff, onClick }: StaffCardProps) {
       className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer group"
       onClick={() => onClick(staff)}
     >
-      <div className="h-32 bg-gradient-to-r from-[#003366] to-[#0066cc] relative overflow-hidden">
+      <div className="h-32 bg-gradient-to-r from-[#003366] to-[#0066cc] relative"> 
         <div className="absolute inset-0 bg-[url('/placeholder.svg?height=200&width=400')] bg-cover bg-center mix-blend-overlay opacity-20"></div>
         <div className="absolute -bottom-12 left-4">
           <div className="relative h-24 w-24 rounded-full border-4 border-white overflow-hidden bg-white">
@@ -37,7 +37,7 @@ export default function StaffCard({ staff, onClick }: StaffCardProps) {
             <h3 className="text-lg font-semibold text-gray-800 group-hover:text-[#003366] transition-colors">
               {staff.name}
             </h3>
-            <p className="text-sm text-[#0066cc]">{staff.position}</p>
+            <p className="text-sm text-[#0066cc]"><strong>{staff.position}</strong></p>
           </div>
           <Badge variant="outline" className="bg-gray-50">
             {staff.department}

@@ -19,7 +19,7 @@ export default function StaffCard({ staff, onClick }: StaffCardProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer group"
+      //className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer group"
       onClick={() => onClick(staff)}
     >
       <div className="h-32 bg-gradient-to-r from-[#003366] to-[#0066cc] relative"> 
@@ -81,13 +81,13 @@ export default function StaffCard({ staff, onClick }: StaffCardProps) {
               <Github className="h-5 w-5" />
             </Link>
           </div>
-          <motion.div
+          {/* <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="text-xs text-[#003366] font-medium hover:underline"
           >
             View Profile
-          </motion.div>
+          </motion.div> */}
         </div>
       </div>
     </motion.div>

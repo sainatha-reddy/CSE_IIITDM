@@ -20,12 +20,12 @@ export default function HeroSection() {
               key={i}
               className="absolute rounded-full bg-white"
               style={{
-                width: `${Math.random() * 300 + 100}px`,
-                height: `${Math.random() * 300 + 100}px`,
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                opacity: Math.random() * 0.5,
-                transform: `scale(${Math.random() * 1 + 0.5})`,
+                width: `${200 + (i * 50)}px`,
+                height: `${200 + (i * 50)}px`,
+                left: `${20 + (i * 15)}%`,
+                top: `${10 + (i * 15)}%`,
+                opacity: 0.2 + (i * 0.05),
+                transform: `scale(${0.8 + (i * 0.1)})`,
               }}
             />
           ))}

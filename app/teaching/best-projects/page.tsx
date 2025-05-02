@@ -348,7 +348,7 @@ export default function BestProjects() {
               <FacultyAdvisors setSelectedAdviser={setSelectedAdviser} />
 
               {/* Call to Action */}
-              <CTASection />
+              {/* <CTASection /> */}
             </div>
           </div>
         </section>

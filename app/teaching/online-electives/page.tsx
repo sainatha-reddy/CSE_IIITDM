@@ -23,7 +23,7 @@ import HeroSection from "@/components/teaching/online-electives/HeroSection"
 import IntroSection from "@/components/teaching/online-electives/IntroSection"
 import TrackSection from "@/components/teaching/online-electives/TrackSection"
 import BenefitsSection from "@/components/teaching/online-electives/BenefitsSection"
-import CTASection from "@/components/teaching/online-electives/CTASection"
+//import CTASection from "@/components/teaching/online-electives/CTASection"
 import Pagination from "@/components/teaching/online-electives/Pagination"
 import Link from "next/link"
 import Image from "next/image"
@@ -295,7 +295,7 @@ export default function OnlineElectives() {
         <BenefitsSection />
 
         {/* CTA Section */}
-        <CTASection />
+        {/* <CTASection /> */}
       </main>
 
       {/* Footer */}

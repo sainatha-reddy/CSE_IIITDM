@@ -16,8 +16,6 @@ export default function HeroSection() {
       <div className="absolute inset-0 z-0">
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-blue-100 rounded-full opacity-20 blur-3xl transform translate-x-1/4 -translate-y-1/4"></div>
         <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-indigo-100 rounded-full opacity-20 blur-3xl transform -translate-x-1/4 translate-y-1/4"></div>
-
-
         {/* Floating icons */}
         <motion.div
           className="absolute top-1/4 left-1/6 text-blue-300 opacity-20"
@@ -48,9 +46,8 @@ export default function HeroSection() {
           <Award size={55} />
         </motion.div>
       </div>
-
       <div className="container mx-auto px-4 relative z-10">
-        <div className="flex flex-col lg:flex-row items-center gap-12">
+        <div >
           {/* Text content */}
           <motion.div
             className="lg:w-1/2 text-center lg:text-left"
@@ -72,9 +69,9 @@ export default function HeroSection() {
               <Button size="lg" className="bg-[#003366] hover:bg-[#00264d] text-white">
                 Explore Courses
               </Button>
-              <Button size="lg" variant="outline" className="border-[#003366] text-[#003366] hover:bg-blue-50">
+              {/* <Button size="lg" variant="outline" className="border-[#003366] text-[#003366] hover:bg-blue-50">
                 How It Works
-              </Button>
+              </Button> */}
             </div>
 
             {/* Stats */}
@@ -97,49 +94,9 @@ export default function HeroSection() {
                 </motion.div>
               ))}
             </div>
-          </motion.div>
-
+          </motion.div>    
           {/* Image/Illustration */}
-          <motion.div
-            className="lg:w-1/2"
-            initial={{ opacity: 0, x: 20 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.3 }}
-          >
-            <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-2xl blur-xl opacity-70 -z-10"></div>
-              <div className="relative bg-white rounded-xl overflow-hidden shadow-xl">
-                <Image
-                  src="/placeholder.svg?height=500&width=600"
-                  alt="Online Learning Illustration"
-                  width={600}
-                  height={500}
-                  className="w-full h-auto object-cover"
-                />
-
-                {/* Floating badges */}
-                <motion.div
-                  className="absolute top-6 right-6 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-3 flex items-center space-x-2"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.6 }}
-                >
-                  <GraduationCap className="text-[#003366] h-5 w-5" />
-                  <span className="text-sm font-medium text-[#003366]">Learn Anywhere</span>
-                </motion.div>
-
-                <motion.div
-                  className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-3 flex items-center space-x-2"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.8 }}
-                >
-                  <Award className="text-[#003366] h-5 w-5" />
-                  <span className="text-sm font-medium text-[#003366]">Earn Certificates</span>
-                </motion.div>
-              </div>
-            </div>
-          </motion.div>
+          
         </div>
       </div>
     </section>

@@ -74,6 +74,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
+                    target={link.target}
                     className="text-gray-300 hover:text-white transition-colors duration-300 flex items-center group"
                   >
                     <ExternalLink

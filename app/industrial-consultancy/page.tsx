@@ -8,7 +8,7 @@ import Statistics from "@/components/industrial/Statistics"
 import ProjectFilters from "@/components/industrial/ProjectFilters"
 import ProjectsList from "@/components/industrial/ProjectsList"
 //import ProjectDetail from "@/components/industrial/ProjectDetail"
-import CallToAction from "@/components/industrial/CallToAction"
+//import CallToAction from "@/components/industrial/CallToAction"
 import { Building, Users, DollarSign, User, Briefcase } from "lucide-react"
 
 // Project data
@@ -125,7 +125,7 @@ const projects = [
 // Statistics data
 const stats = [
   { id: 1, label: "Total Projects", value: 5, icon: Briefcase },
-  { id: 2, label: "Industry Partners", value: 8, icon: Building },
+  { id: 2, label: "Industry Partners", value: 5, icon: Building },
   { id: 3, label: "Faculty Involved", value: 6, icon: User },
   { id: 4, label: "Students Engaged", value: 25, icon: Users },
   { id: 5, label: "Total Funding", value: "₹25L+", icon: DollarSign },
@@ -169,7 +169,7 @@ export default function IndustrialConsultancy() {
           </div>
         </section>
 
-        <CallToAction />
+        {/* <CallToAction /> */}
       </main>
 
       {/* <ProjectDetail isOpen={isModalOpen} project={selectedProject} onClose={closeProjectModal} /> */}

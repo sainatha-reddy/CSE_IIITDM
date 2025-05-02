@@ -15,7 +15,7 @@ const navItems = [
     subItems: [
       { label: "Overview", href: "/teaching/overview" },
       { label: "Curriculum", href: "https://www.iiitdm.ac.in/students/existing-students/curriculum-info", target: "__blank" },
-      { label: "Online Electives", href: "/teaching/online-electives" },
+      // { label: "Online Electives", href: "/teaching/online-electives" },
       { label: "Time Table", href: "https://www.iiitdm.ac.in/students/existing-students/time-table", target: "__blank" },
       { label: "Lecture Notes", href: "/teaching/lecture-notes" },
       { label: "Best Projects", href: "/teaching/best-projects" },

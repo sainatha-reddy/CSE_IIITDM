@@ -306,10 +306,7 @@ export default function HeroSection() {
                     </div>
 
                     {/* Small floating card */}
-                    <div className="absolute -top-4 -right-4 bg-white rounded-md p-4 shadow-lg w-48">
-                      <div className="text-sm font-medium text-gray-900 mb-1">Latest Achievement</div>
-                      <div className="text-xs text-gray-500">Our students won the national coding competition</div>
-                    </div>
+                    
                   </motion.div>
                 </AnimatePresence>
               </div>

@@ -14,10 +14,27 @@ export async function GET() {
         faculty.stream && faculty.stream.toUpperCase() === 'COE'
       );
     }
-    
-    return NextResponse.json(data);
+
+    // Process image URLs before returning the response
+    const processedFaculty = data.faculty.map((faculty: any) => {
+      // Return faculty data with processed image URLs
+      return {
+        ...faculty,
+        // Don't modify original data, just add an additional field for frontend use
+        imageUrl: faculty.localimg 
+          ? `https://old.iiitdm.ac.in/img/faculty/${faculty.localimg}`
+          : faculty.pic && faculty.pic !== 'null' 
+            ? faculty.pic 
+            : null
+      };
+    });
+
+    return NextResponse.json({
+      status: true,
+      faculty: processedFaculty
+    });
   } catch (error) {
     console.error('Error fetching faculty data:', error);
     return NextResponse.json({ error: 'Failed to fetch faculty data' }, { status: 500 });
   }
-} 
+}

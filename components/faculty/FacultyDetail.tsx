@@ -1,164 +1,377 @@
-import type React from "react"
+import React, { useState } from "react"
 import Image from "next/image"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
-import { Mail, Phone, MapPin, Award, BookOpen, Linkedin, Github, Globe } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { 
+  Briefcase, GraduationCap, BookOpen, Award, Mail, 
+  Phone, MapPin, Globe, Linkedin, Github, FileText 
+} from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 interface FacultyDetailProps {
   faculty: any
+  detailedInfo?: any
 }
 
-const FacultyDetail: React.FC<FacultyDetailProps> = ({ faculty }) => {
-  if (!faculty) return null
+const FacultyDetail: React.FC<FacultyDetailProps> = ({ faculty, detailedInfo }) => {
+  const [imageError, setImageError] = useState(false);
+  
+  // Handle image URL construction properly
+  let imageUrl = "/placeholder.svg";
+  
+  // First priority: Use faculty.image if it starts with http(s)
+  if (faculty?.image && (faculty.image.startsWith('http://') || faculty.image.startsWith('https://'))) {
+    imageUrl = faculty.image;
+  } 
+  // Second priority: Use detailedInfo.image with proper domain prefix if it exists
+  else if (detailedInfo?.image && !imageError) {
+    imageUrl = `https://old.iiitdm.ac.in/img/faculty/${detailedInfo.image}`;
+  }
+  // Third priority: Use faculty.image as-is (might be a local path)
+  else if (faculty?.image && !imageError) {
+    imageUrl = faculty.image;
+  }
+  
+  // Combine both data sources, prioritizing API data when available
+  const combinedData = {
+    name: detailedInfo?.name || faculty?.name || "Unknown",
+    position: detailedInfo?.desig || faculty?.position || "Faculty",
+    email: faculty?.email || detailedInfo?.email || "",
+    phone: faculty?.phone || "",
+    office: faculty?.office || "",
+    // We'll use the imageUrl variable constructed above
+    image: imageUrl,
+    interests: faculty?.interests || [],
+    bio: faculty?.bio || "",
+    socialLinks: faculty?.socialLinks || {},
+    
+    // Education (from API)
+    education: [
+      detailedInfo?.dschoolBoard && {
+        degree: detailedInfo.dschoolBoard,
+        institution: detailedInfo.dschoolName,
+        location: detailedInfo.dschoolPlace,
+        year: ""
+      },
+      detailedInfo?.mschoolBoard && {
+        degree: detailedInfo.mschoolBoard,
+        institution: detailedInfo.mschoolName,
+        location: detailedInfo.mschoolPlace,
+        year: ""
+      },
+      detailedInfo?.bschoolBoard && {
+        degree: detailedInfo.bschoolBoard,
+        institution: detailedInfo.bschoolName,
+        location: detailedInfo.bschoolPlace,
+        year: ""
+      }
+    ].filter(Boolean),
+    
+    // Work experience (from API)
+    experience: [
+      detailedInfo?.workName1 && { role: detailedInfo.workName1 },
+      detailedInfo?.workName2 && { role: detailedInfo.workName2 },
+      detailedInfo?.workName3 && { role: detailedInfo.workName3 }
+    ].filter(Boolean),
+    
+    // Publications (from API)
+    publications: [
+      detailedInfo?.pubCite3 && { title: detailedInfo.pubCite3 },
+      detailedInfo?.pubCite4 && { title: detailedInfo.pubCite4 }
+    ].filter(Boolean),
+    
+    // Teaching (from API)
+    teaching: [
+      detailedInfo?.schoolName1 && { course: detailedInfo.schoolName1 },
+      detailedInfo?.coursework && { course: detailedInfo.coursework }
+    ].filter(Boolean),
+    
+    // Talks (from API)
+    talks: detailedInfo?.InvitedTalks ? detailedInfo.InvitedTalks.split('\r\n').filter((talk: string) => talk.trim()) : [],
+    
+    // Awards (from API)
+    awards: detailedInfo?.schoolBoard ? detailedInfo.schoolBoard.split('\r\n').filter((award: string) => award.trim()) : [],
+    
+    // Research areas (from API)
+    researchAreas: detailedInfo?.research_interest 
+      ? detailedInfo.research_interest.split(',').map((i: string) => i.trim()).filter((i: string) => i)
+      : [],
+  }
+
+  // Handle image loading error
+  const handleImageError = () => {
+    setImageError(true);
+    // Fallback to placeholder if image loading fails
+  };
 
   return (
-    <>
-      <DialogHeader className="flex flex-col md:flex-row items-center md:items-start text-center md:text-left">
-        <div className="w-32 h-32 rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6 flex-shrink-0">
-          <Image
-            src={faculty.image || "/placeholder.svg"}
-            alt={faculty.name}
-            width={128}
-            height={128}
-            className="object-cover"
-          />
-        </div>
-        <div>
-          <DialogTitle className="text-2xl">{faculty.name}</DialogTitle>
-          <DialogDescription className="text-blue-600 font-medium">{faculty.position}</DialogDescription>
-          <div className="flex flex-wrap gap-2 mt-2">
-            <div className="flex items-center text-sm text-gray-600">
-              <Mail className="w-4 h-4 mr-1" />
-              {faculty.email}
-            </div>
-            <div className="flex items-center text-sm text-gray-600">
-              <MapPin className="w-4 h-4 mr-1" />
-              {faculty.office}
-            </div>
+    <div className="py-2">
+      <div className="flex flex-col md:flex-row gap-8">
+        {/* Faculty Image and Basic Info */}
+        <div className="md:w-1/3">
+          <div className="relative w-full aspect-square md:h-64 rounded-lg overflow-hidden mb-4 bg-gray-100">
+            <Image
+              src={imageError ? "/placeholder.svg" : combinedData.image}
+              alt={combinedData.name}
+              fill
+              className="object-cover"
+              loading="lazy"
+              sizes="(max-width: 768px) 100vw, 33vw"
+              placeholder="blur"
+              blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2YxZjVmOSIvPjwvc3ZnPg=="
+              onError={handleImageError}
+            />
           </div>
-          <div className="flex mt-3 space-x-2">
-            {faculty.socialLinks.linkedin && (
-              <Link href={faculty.socialLinks.linkedin} target="_blank" rel="noopener noreferrer">
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className="h-8 w-8 rounded-full text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                >
-                  <Linkedin className="h-4 w-4" />
-                </Button>
-              </Link>
-            )}
-            {faculty.socialLinks.github && (
-              <Link href={faculty.socialLinks.github} target="_blank" rel="noopener noreferrer">
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className="h-8 w-8 rounded-full text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-                >
-                  <Github className="h-4 w-4" />
-                </Button>
-              </Link>
-            )}
-            {faculty.socialLinks.website && (
-              <Link href={faculty.socialLinks.website} target="_blank" rel="noopener noreferrer">
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className="h-8 w-8 rounded-full text-teal-600 hover:text-teal-700 hover:bg-teal-50"
-                >
-                  <Globe className="h-4 w-4" />
-                </Button>
-              </Link>
-            )}
-          </div>
-        </div>
-      </DialogHeader>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        <div>
-          <h3 className="text-lg font-semibold mb-3 text-blue-900">Research Interests</h3>
-          <div className="flex flex-wrap gap-2 mb-6">
-            {faculty.interests.map((interest: string, idx: number) => (
-              <Badge key={idx} variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-                {interest}
-              </Badge>
-            ))}
-          </div>
-
-          <h3 className="text-lg font-semibold mb-3 text-blue-900">Education</h3>
-          <div className="space-y-2 mb-6">
-            {faculty.education.map((edu: any, idx: number) => (
-              <div key={idx} className="flex items-start">
-                <Award className="w-5 h-5 text-blue-600 mr-2 mt-0.5" />
-                <div>
-                  <p className="font-medium text-gray-900">{edu.degree}</p>
-                  <p className="text-sm text-gray-600">
-                    {edu.university}, {edu.year}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <h3 className="text-lg font-semibold mb-3 text-blue-900">Courses Taught</h3>
-          <div className="space-y-2">
-            {faculty.courses.map((course: string, idx: number) => (
-              <div key={idx} className="flex items-center">
-                <BookOpen className="w-5 h-5 text-blue-600 mr-2" />
-                <p className="text-gray-700">{course}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <h3 className="text-lg font-semibold mb-3 text-blue-900">Academic Metrics</h3>
-          <div className="grid grid-cols-3 gap-4 mb-6">
-            <Card className="bg-blue-50 border-none">
-              <CardContent className="p-4 text-center">
-                <p className="text-3xl font-bold text-blue-700">{faculty.publications}</p>
-                <p className="text-sm text-blue-600">Publications</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-indigo-50 border-none">
-              <CardContent className="p-4 text-center">
-                <p className="text-3xl font-bold text-indigo-700">{faculty.projects}</p>
-                <p className="text-sm text-indigo-600">Projects</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-purple-50 border-none">
-              <CardContent className="p-4 text-center">
-                <p className="text-3xl font-bold text-purple-700">{faculty.students}</p>
-                <p className="text-sm text-purple-600">Students</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          <h3 className="text-lg font-semibold mb-3 text-blue-900">Contact Information</h3>
+          <h2 className="text-2xl font-bold text-blue-900 mb-1">{combinedData.name}</h2>
+          <p className="text-blue-600 font-medium mb-4">{combinedData.position}</p>
+          
           <div className="space-y-3 mb-6">
-            <div className="flex items-center">
-              <Mail className="w-5 h-5 text-gray-400 mr-3" />
-              <p className="text-gray-700">{faculty.email}</p>
-            </div>
-            <div className="flex items-center">
-              <Phone className="w-5 h-5 text-gray-400 mr-3" />
-              <p className="text-gray-700">{faculty.phone}</p>
-            </div>
-            <div className="flex items-center">
-              <MapPin className="w-5 h-5 text-gray-400 mr-3" />
-              <p className="text-gray-700">{faculty.office}</p>
+            {combinedData.email && (
+              <div className="flex items-center">
+                <Mail className="text-blue-500 w-5 h-5 mr-3" />
+                <a href={`mailto:${combinedData.email}`} className="text-gray-700 hover:text-blue-600 break-all">
+                  {combinedData.email}
+                </a>
+              </div>
+            )}
+            {combinedData.phone && (
+              <div className="flex items-center">
+                <Phone className="text-blue-500 w-5 h-5 mr-3" />
+                <span className="text-gray-700">{combinedData.phone}</span>
+              </div>
+            )}
+            {combinedData.office && (
+              <div className="flex items-center">
+                <MapPin className="text-blue-500 w-5 h-5 mr-3" />
+                <span className="text-gray-700">{combinedData.office}</span>
+              </div>
+            )}
+          </div>
+          
+          {/* Social Links */}
+          <div className="flex gap-2 mb-6">
+            {combinedData.socialLinks?.website && (
+              <a href={combinedData.socialLinks.website} target="_blank" rel="noopener noreferrer" aria-label="Personal website">
+                <Button size="icon" variant="outline" className="rounded-full h-9 w-9">
+                  <Globe className="h-5 w-5" />
+                </Button>
+              </a>
+            )}
+            {combinedData.socialLinks?.linkedin && (
+              <a href={combinedData.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
+                <Button size="icon" variant="outline" className="rounded-full h-9 w-9">
+                  <Linkedin className="h-5 w-5" />
+                </Button>
+              </a>
+            )}
+            {combinedData.socialLinks?.github && (
+              <a href={combinedData.socialLinks.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
+                <Button size="icon" variant="outline" className="rounded-full h-9 w-9">
+                  <Github className="h-5 w-5" />
+                </Button>
+              </a>
+            )}
+          </div>
+          
+          {/* Research Interests */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-2 flex items-center">
+              <BookOpen className="w-5 h-5 mr-2 text-blue-600" />
+              Research Interests
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {[...combinedData.interests, ...combinedData.researchAreas].filter((v, i, a) => a.indexOf(v) === i).map((interest, idx) => (
+                <Badge key={idx} variant="secondary" className="bg-blue-50 text-blue-700">
+                  {interest}
+                </Badge>
+              ))}
+              {combinedData.interests.length === 0 && combinedData.researchAreas.length === 0 && (
+                <p className="text-gray-500 text-sm">No research interests listed</p>
+              )}
             </div>
           </div>
-
-          <Button className="w-full bg-blue-600 hover:bg-blue-700">
-            <Mail className="w-4 h-4 mr-2" />
-            Contact {faculty.name.split(" ")[0]}
-          </Button>
+        </div>
+        
+        {/* Faculty Detailed Info Tabs */}
+        <div className="md:w-2/3">
+          <Tabs defaultValue="bio" className="w-full">
+            <TabsList className="mb-4 grid w-full grid-cols-5">
+              <TabsTrigger value="bio">Bio</TabsTrigger>
+              <TabsTrigger value="education">Education</TabsTrigger>
+              <TabsTrigger value="experience">Experience</TabsTrigger>
+              <TabsTrigger value="publications">Publications</TabsTrigger>
+              <TabsTrigger value="teaching">Teaching</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="bio" className="p-4 bg-gray-50 rounded-lg">
+              <ScrollArea className="h-[400px] pr-4">
+                {combinedData.bio ? (
+                  <div className="prose prose-blue max-w-none">
+                    <p>{combinedData.bio}</p>
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <FileText className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+                    <p className="text-gray-500">No biography information available</p>
+                  </div>
+                )}
+                
+                {/* Awards Section */}
+                {combinedData.awards.length > 0 && (
+                  <div className="mt-8">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                      <Award className="w-5 h-5 mr-2 text-blue-600" />
+                      Awards & Recognitions
+                    </h3>
+                    <ul className="space-y-2">
+                      {combinedData.awards.map((award, idx) => (
+                        <li key={idx} className="flex">
+                          <span className="text-blue-600 mr-2">•</span>
+                          <span>{award}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                
+                {/* Invited Talks Section */}
+                {combinedData.talks.length > 0 && (
+                  <div className="mt-8">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                      <FileText className="w-5 h-5 mr-2 text-blue-600" />
+                      Invited Talks & Presentations
+                    </h3>
+                    <ul className="space-y-2">
+                      {combinedData.talks.map((talk, idx) => (
+                        <li key={idx} className="flex">
+                          <span className="text-blue-600 mr-2">•</span>
+                          <span>{talk}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </ScrollArea>
+            </TabsContent>
+            
+            <TabsContent value="education" className="p-4 bg-gray-50 rounded-lg">
+              <ScrollArea className="h-[400px] pr-4">
+                {combinedData.education.length > 0 ? (
+                  <div className="space-y-6">
+                    {combinedData.education.map((edu, idx) => (
+                      <Card key={idx} className="border-l-4 border-l-blue-600">
+                        <CardContent className="p-4">
+                          <div className="flex items-start">
+                            <GraduationCap className="w-6 h-6 text-blue-600 mr-3 mt-1" />
+                            <div>
+                              <h4 className="font-semibold text-gray-900">{edu.degree}</h4>
+                              <p className="text-blue-700">{edu.institution}</p>
+                              {edu.location && <p className="text-gray-500">{edu.location}</p>}
+                              {edu.year && <p className="text-gray-500 text-sm">{edu.year}</p>}
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <GraduationCap className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+                    <p className="text-gray-500">No education information available</p>
+                  </div>
+                )}
+              </ScrollArea>
+            </TabsContent>
+            
+            <TabsContent value="experience" className="p-4 bg-gray-50 rounded-lg">
+              <ScrollArea className="h-[400px] pr-4">
+                {combinedData.experience.length > 0 ? (
+                  <div className="space-y-6">
+                    {combinedData.experience.map((exp, idx) => (
+                      <Card key={idx} className="border-l-4 border-l-green-600">
+                        <CardContent className="p-4">
+                          <div className="flex items-start">
+                            <Briefcase className="w-6 h-6 text-green-600 mr-3 mt-1" />
+                            <div>
+                              <h4 className="font-semibold text-gray-900">{exp.role}</h4>
+                              {exp.company && <p className="text-green-700">{exp.company}</p>}
+                              {exp.duration && <p className="text-gray-500 text-sm">{exp.duration}</p>}
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <Briefcase className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+                    <p className="text-gray-500">No experience information available</p>
+                  </div>
+                )}
+              </ScrollArea>
+            </TabsContent>
+            
+            <TabsContent value="publications" className="p-4 bg-gray-50 rounded-lg">
+              <ScrollArea className="h-[400px] pr-4">
+                {combinedData.publications.length > 0 ? (
+                  <div className="space-y-6">
+                    {combinedData.publications.map((pub, idx) => (
+                      <Card key={idx}>
+                        <CardContent className="p-4">
+                          <div className="flex items-start">
+                            <FileText className="w-5 h-5 text-blue-600 mr-3 mt-1 flex-shrink-0" />
+                            <div>
+                              <p className="text-gray-800">{pub.title}</p>
+                              {pub.authors && <p className="text-gray-600 text-sm mt-1">{pub.authors}</p>}
+                              {pub.venue && <p className="text-blue-600 italic text-sm mt-1">{pub.venue}</p>}
+                              {pub.year && <p className="text-gray-500 text-sm">{pub.year}</p>}
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <FileText className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+                    <p className="text-gray-500">No publications information available</p>
+                  </div>
+                )}
+              </ScrollArea>
+            </TabsContent>
+            
+            <TabsContent value="teaching" className="p-4 bg-gray-50 rounded-lg">
+              <ScrollArea className="h-[400px] pr-4">
+                {combinedData.teaching.length > 0 ? (
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-2">Courses Taught</h3>
+                    <div className="grid grid-cols-1 gap-4">
+                      {combinedData.teaching.map((item, idx) => (
+                        <Card key={idx} className="border-l-4 border-l-purple-600">
+                          <CardContent className="p-4">
+                            <div className="flex items-center">
+                              <BookOpen className="w-5 h-5 text-purple-600 mr-3" />
+                              <p className="text-gray-800">{item.course}</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <BookOpen className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+                    <p className="text-gray-500">No teaching information available</p>
+                  </div>
+                )}
+              </ScrollArea>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

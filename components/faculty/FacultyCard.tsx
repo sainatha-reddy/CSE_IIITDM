@@ -29,18 +29,33 @@ const FacultyCard: React.FC<FacultyCardProps> = ({
 }) => {
   const interests = Array.isArray(faculty?.interests) ? faculty.interests : [];
   const interestIconKeys = Array.isArray(faculty?.interestIconKeys) ? faculty.interestIconKeys : [];
+  
+  // Ensure we have a properly formed email for API calls
+  const handleCardClick = () => {
+    if (!faculty) return;
+    onSelect(faculty);
+  };
 
   return (
     <motion.div whileHover={{ y: -5 }} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} className="h-full">
       <Card
         className="h-full overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer"
-        onClick={() => onSelect(faculty)}
+        onClick={handleCardClick}
       >
         <div className="relative">
           <div className={`h-3 bg-gradient-to-r ${gradient}`}></div>
           <div className="p-6 pb-0 flex justify-center">
             <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-lg">
-              <Image src={faculty?.image || "/placeholder.svg"} alt={faculty?.name || "Faculty Member"} fill className="object-cover" />
+              <Image 
+                src={faculty?.image || "/placeholder.svg"} 
+                alt={faculty?.name || "Faculty Member"} 
+                fill 
+                className="object-cover" 
+                loading="lazy"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                placeholder="blur"
+                blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2YxZjVmOSIvPjwvc3ZnPg=="
+              />
             </div>
           </div>
         </div>
@@ -72,6 +87,8 @@ const FacultyCard: React.FC<FacultyCardProps> = ({
                     size="icon"
                     variant="ghost"
                     className="h-8 w-8 rounded-full text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                    onClick={(e) => e.stopPropagation()} // Prevent card click event
+                    aria-label="LinkedIn Profile"
                   >
                     <Linkedin className="h-4 w-4" />
                   </Button>
@@ -83,6 +100,8 @@ const FacultyCard: React.FC<FacultyCardProps> = ({
                     size="icon"
                     variant="ghost"
                     className="h-8 w-8 rounded-full text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                    onClick={(e) => e.stopPropagation()} // Prevent card click event
+                    aria-label="GitHub Profile"
                   >
                     <Github className="h-4 w-4" />
                   </Button>
@@ -94,6 +113,8 @@ const FacultyCard: React.FC<FacultyCardProps> = ({
                     size="icon"
                     variant="ghost"
                     className="h-8 w-8 rounded-full text-teal-600 hover:text-teal-700 hover:bg-teal-50"
+                    onClick={(e) => e.stopPropagation()} // Prevent card click event
+                    aria-label="Personal Website"
                   >
                     <Globe className="h-4 w-4" />
                   </Button>
@@ -103,6 +124,7 @@ const FacultyCard: React.FC<FacultyCardProps> = ({
             <Button
               variant="ghost"
               className="text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-0 flex items-center"
+              aria-label={`View ${faculty?.name || "Faculty"}'s profile`}
             >
               View Profile
               <ChevronRight className="ml-1 h-4 w-4" />
@@ -129,7 +151,12 @@ const FacultyCard: React.FC<FacultyCardProps> = ({
                 </div>
               ))}
             </div>
-            <Button className="bg-white text-blue-600 hover:bg-blue-50">View Full Profile</Button>
+            <Button 
+              className="bg-white text-blue-600 hover:bg-blue-50"
+              aria-label={`View ${faculty?.name || "Faculty"}'s full profile`}
+            >
+              View Full Profile
+            </Button>
           </motion.div>
         )}
       </Card>

@@ -69,6 +69,7 @@ export default function MainNav() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const [activeSubDropdown, setActiveSubDropdown] = useState<string | null>(null)
   const [isMounted, setIsMounted] = useState(false) // Track if component has mounted
+  const [isScrolled, setIsScrolled] = useState(false) // Track if page is scrolled
   const navRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
   const dropdownTimerRef = useRef<NodeJS.Timeout | null>(null)
@@ -76,6 +77,16 @@ export default function MainNav() {
 
   useEffect(() => {
     setIsMounted(true) // Set isMounted to true after component mounts
+    
+    // Add scroll event listener
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10)
+    }
+    window.addEventListener('scroll', handleScroll)
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
   }, [])
 
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen)
@@ -302,7 +313,7 @@ export default function MainNav() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-50" ref={navRef}>
+      <nav className={`fixed top-0 left-0 right-0 bg-white shadow-md z-50 transition-all duration-300 ${isScrolled ? "shadow-lg" : ""}`} ref={navRef}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             {/* Logo and Title */}
@@ -340,6 +351,113 @@ export default function MainNav() {
             </div>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="lg:hidden w-full overflow-hidden"
+            >
+              <div className="px-4 py-4 bg-white border-t border-gray-100 shadow-inner">
+                <ul className="space-y-2">
+                  {navItems.map((item) => (
+                    <li key={item.label} className="w-full">
+                      {item.subItems ? (
+                        <div className="w-full">
+                          <button
+                            onClick={() => handleDropdownToggle(item.label)}
+                            className={`flex items-center justify-between w-full px-4 py-3 text-sm font-medium rounded-md ${
+                              isActivePath(item.href) ? "text-white bg-[#003366]" : "text-[#003366]"
+                            }`}
+                          >
+                            {item.label}
+                            <ChevronDown className={`ml-1 h-4 w-4 transition-transform ${activeDropdown === item.label ? "rotate-180" : ""}`} />
+                          </button>
+                          
+                          {activeDropdown === item.label && (
+                            <motion.ul
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                              className="mt-1 ml-4 pl-2 border-l-2 border-blue-200 space-y-1"
+                            >
+                              {item.subItems.map((subItem) => 
+                                subItem.subItems ? (
+                                  <li key={subItem.label} className="w-full">
+                                    <button
+                                      onClick={() => handleSubDropdownToggle(subItem.label)}
+                                      className={`flex items-center justify-between w-full px-4 py-2 text-sm font-medium rounded-md ${
+                                        isActivePath(subItem.href) ? "text-blue-700" : "text-[#003366]"
+                                      }`}
+                                    >
+                                      {subItem.label}
+                                      <ChevronDown className={`ml-1 h-4 w-4 transition-transform ${activeSubDropdown === subItem.label ? "rotate-180" : ""}`} />
+                                    </button>
+                                    
+                                    {activeSubDropdown === subItem.label && (
+                                      <motion.ul
+                                        initial={{ opacity: 0, y: -5 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -5 }}
+                                        className="mt-1 ml-4 pl-2 border-l-2 border-blue-100 space-y-1"
+                                      >
+                                        {subItem.subItems.map((nestedItem) => (
+                                          <li key={nestedItem.label}>
+                                            <Link
+                                              href={nestedItem.href}
+                                              target={nestedItem.target}
+                                              className={`block px-4 py-2 text-sm rounded-md ${
+                                                isActivePath(nestedItem.href) ? "text-blue-700 bg-blue-50" : "text-[#003366]"
+                                              }`}
+                                              onClick={() => setMobileMenuOpen(false)}
+                                            >
+                                              {nestedItem.label}
+                                            </Link>
+                                          </li>
+                                        ))}
+                                      </motion.ul>
+                                    )}
+                                  </li>
+                                ) : (
+                                  <li key={subItem.label}>
+                                    <Link
+                                      href={subItem.href}
+                                      target={subItem.target}
+                                      className={`block px-4 py-2 text-sm rounded-md ${
+                                        isActivePath(subItem.href) ? "text-blue-700 bg-blue-50" : "text-[#003366]"
+                                      }`}
+                                      onClick={() => setMobileMenuOpen(false)}
+                                    >
+                                      {subItem.label}
+                                    </Link>
+                                  </li>
+                                )
+                              )}
+                            </motion.ul>
+                          )}
+                        </div>
+                      ) : (
+                        <Link
+                          href={item.href}
+                          target={item.target}
+                          className={`block px-4 py-3 text-sm font-medium rounded-md ${
+                            isActivePath(item.href) ? "text-white bg-[#003366]" : "text-[#003366]"
+                          }`}
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          {item.label}
+                        </Link>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Update the dropdown styles */}
         <style jsx global>{`

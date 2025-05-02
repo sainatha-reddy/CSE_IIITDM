@@ -192,6 +192,7 @@ export default function MainNav() {
                     <li key={subItem.label}>
                       <Link
                         href={subItem.href}
+                        target={subItem.target}
                         className="block px-4 py-2 text-sm text-[#003366] hover:bg-blue-50 hover:text-[#6495ED]"
                       >
                         {subItem.label}

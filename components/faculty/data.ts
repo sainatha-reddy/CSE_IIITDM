@@ -5,17 +5,11 @@ import {
   Database,
   BrainCircuit,
   Lock,
-  ImageIcon,
-  Wifi,
-  Zap,
-  Cloud,
-  LineChart,
   Eye,
-  Fingerprint,
   FileText,
   User,
-  Calendar,
-} from "lucide-react"
+  Cloud,
+} from "lucide-react";
 
 // Fetch and transform faculty data
 export const fetchFacultyData = async () => {

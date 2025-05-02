@@ -4,6 +4,12 @@ import { motion } from "framer-motion"
 import { ArrowRight, BookOpen, Database, Microscope, Network, Server } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
+interface ResearchStatProps {
+  icon: React.ReactNode
+  value: string
+  label: string
+}
+
 export default function HeroSection() {
   return (
     <section className="relative py-20 overflow-hidden bg-gradient-to-b from-[#f0f4ff] to-white">
@@ -125,15 +131,22 @@ export default function HeroSection() {
   )
 }
 
-function ResearchStat({ icon, value, label }) {
+function ResearchStat({ icon, value, label }: ResearchStatProps) {
   return (
-    <div className="flex flex-col items-center p-4 rounded-xl bg-white shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-[#6495ED]/10">
-      <div className="w-12 h-12 rounded-full bg-[#003366]/10 flex items-center justify-center text-[#003366] mb-3">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.4 }}
+      className="flex items-center space-x-3"
+    >
+      <div className="w-12 h-12 rounded-full bg-[#003366]/10 flex items-center justify-center">
         {icon}
       </div>
-      <div className="text-2xl font-bold text-[#003366]">{value}</div>
-      <div className="text-sm text-[#003366]/70">{label}</div>
-    </div>
+      <div>
+        <div className="text-2xl font-bold text-[#003366]">{value}</div>
+        <div className="text-sm text-[#003366]/70">{label}</div>
+      </div>
+    </motion.div>
   )
 }
 

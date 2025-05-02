@@ -107,7 +107,7 @@ const researchAreas = [
 ]
 
 export default function ResearchAreas() {
-  const [hoveredCard, setHoveredCard] = useState(null)
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null)
 
   return (
     <section className="py-20 bg-gradient-to-br from-white to-[#f5f8ff]">

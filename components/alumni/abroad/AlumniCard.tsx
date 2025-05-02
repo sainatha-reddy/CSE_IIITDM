@@ -24,7 +24,7 @@ export default function AlumniCard({ alumni, index, viewMode, onClick }: AlumniC
           ? "bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:shadow-md transition-all duration-300"
           : "bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:shadow-md transition-all duration-300 flex"
       }`}
-      onClick={onClick}
+      //onClick={onClick}
     >
       {viewMode === "grid" ? (
         // Grid view
@@ -46,12 +46,12 @@ export default function AlumniCard({ alumni, index, viewMode, onClick }: AlumniC
               <span>{alumni.country}</span>
             </div>
           </div>
-          <div className="bg-gray-50 px-4 py-3 flex justify-center">
+          {/* <div className="bg-gray-50 px-4 py-3 flex justify-center">
             <button className="text-blue-600 text-sm font-medium hover:text-blue-800 transition-colors flex items-center">
               View Details
               <ExternalLink className="h-3 w-3 ml-1" />
             </button>
-          </div>
+          </div> */}
         </>
       ) : (
         // List view

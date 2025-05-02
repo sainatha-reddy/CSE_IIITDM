@@ -24,7 +24,7 @@ export default function Footer() {
           <div className="space-y-3">
             <div className="flex items-center space-x-2">
               <Image
-                src="/placeholder.svg?height=40&width=40"
+                src="/assets/image.png"
                 alt="IIITDM Kancheepuram Logo"
                 width={40}
                 height={40}
@@ -40,11 +40,10 @@ export default function Footer() {
               education, research, and innovation.
             </p>
             <div className="flex space-x-2 mt-2">
-              {[{ Icon: Facebook, url: "https://facebook.com", bg: "bg-blue-800", hover: "hover:bg-blue-700" },
-              { Icon: Twitter, url: "https://twitter.com", bg: "bg-blue-500", hover: "hover:bg-blue-400" },
-              { Icon: Linkedin, url: "https://linkedin.com", bg: "bg-blue-900", hover: "hover:bg-blue-800" },
-              { Icon: Instagram, url: "https://instagram.com", bg: "bg-pink-700", hover: "hover:bg-pink-600" },
-              { Icon: Youtube, url: "https://youtube.com", bg: "bg-red-700", hover: "hover:bg-red-600" }
+              {[{ Icon: Facebook, url: "https://www.facebook.com/IIIT-DM-Kancheepuram-628084297317220/", bg: "bg-blue-800", hover: "hover:bg-blue-700" },
+              { Icon: Twitter, url: "https://twitter.com/iiitdm_kancheep", bg: "bg-blue-500", hover: "hover:bg-blue-400" },
+              { Icon: Linkedin, url: "https://www.linkedin.com/company/department-of-cse-iiitdm-kancheepuram", bg: "bg-blue-900", hover: "hover:bg-blue-800" },
+              { Icon: Youtube, url: "https://www.youtube.com/channel/UCC0_90UdP8T31E4CLBhPWWA", bg: "bg-red-700", hover: "hover:bg-red-600" }
               ].map(({ Icon, url, bg, hover }) => (
                 <motion.a
                   key={url}
@@ -66,13 +65,11 @@ export default function Footer() {
             <h3 className="text-base font-semibold mb-2 border-b border-blue-400 pb-1">Quick Links</h3>
             <ul className="space-y-1.5 text-xs">
               {[
-                { label: "About Us", href: "/about" },
-                { label: "Academics", href: "/academics" },
-                { label: "Research", href: "/research" },
-                { label: "People", href: "/people" },
-                { label: "Placements", href: "/placements" },
-                { label: "Events", href: "/events" },
-                { label: "Contact", href: "/contact" },
+                { label: "IIITDM Website", href: "https://iiitdm.ac.in/",target: "__blank" },
+                {label:"academics", href:"https://iiitdm.ac.in/academics/study-at-iiitdm", target: "__blank"},
+                { label: "Academic Calender", href: "https://iiitdm.ac.in/students/existing-students/academic-calendar", target: "__blank" },
+                { label: "Admissions", href: "https://iiitdm.ac.in/admissions/", target: "__blank" },
+                { label: "Placements", href: "https://www.placements.iiitdm.ac.in/", target: "__blank" },
               ].map((link) => (
                 <li key={link.label}>
                   <Link
@@ -95,24 +92,30 @@ export default function Footer() {
             <h3 className="text-base font-semibold mb-2 border-b border-blue-400 pb-1">Contact Us</h3>
             <ul className="space-y-2 text-xs">
               <li className="flex items-start">
-                <MapPin className="mr-2 h-4 w-4 text-blue-300 flex-shrink-0 mt-0.5" />
+                <span>Prof. Sivaselvan B</span>
+              </li>
+              <li className="flex items-start">
+                {/* /* hod name */}
+                <span >Head of Department</span>
+              </li>
+              <li className="flex items-start">
                 <span>
-                  IIITDM Kancheepuram, Vandalur-Kelambakkam Road, Chennai - 600127, Tamil Nadu, India
+                  IIITD&M Kancheepuram,Chennai
                 </span>
               </li>
               <li className="flex items-center">
                 <Phone className="mr-2 h-4 w-4 text-blue-300" />
-                <a href="tel:+914427476300" className="hover:text-blue-200 transition-colors duration-300">
-                  +91 44 2747 6300
+                <a href="tel:+914427476346" className="hover:text-blue-200 transition-colors duration-300">
+                  +91 44 2747 6346
                 </a>
               </li>
               <li className="flex items-center">
                 <Mail className="mr-2 h-4 w-4 text-blue-300" />
                 <a
-                  href="mailto:info@iiitdm.ac.in"
+                  href="mailto:hod-cse@iiitdm.ac.in"
                   className="hover:text-blue-200 transition-colors duration-300"
                 >
-                  info@iiitdm.ac.in
+                  hod-cse@iiitdm.ac.in
                 </a>
               </li>
             </ul>

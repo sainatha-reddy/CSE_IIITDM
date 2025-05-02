@@ -7,7 +7,7 @@ import HeroSection from "@/components/industrial/HeroSection"
 import Statistics from "@/components/industrial/Statistics"
 import ProjectFilters from "@/components/industrial/ProjectFilters"
 import ProjectsList from "@/components/industrial/ProjectsList"
-import ProjectDetail from "@/components/industrial/ProjectDetail"
+//import ProjectDetail from "@/components/industrial/ProjectDetail"
 import CallToAction from "@/components/industrial/CallToAction"
 import { Building, Users, DollarSign, User, Briefcase } from "lucide-react"
 
@@ -124,7 +124,7 @@ const projects = [
 
 // Statistics data
 const stats = [
-  { id: 1, label: "Total Projects", value: 15, icon: Briefcase },
+  { id: 1, label: "Total Projects", value: 5, icon: Briefcase },
   { id: 2, label: "Industry Partners", value: 8, icon: Building },
   { id: 3, label: "Faculty Involved", value: 6, icon: User },
   { id: 4, label: "Students Engaged", value: 25, icon: Users },
@@ -137,7 +137,7 @@ export default function IndustrialConsultancy() {
   const [selectedProject, setSelectedProject] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const openProjectModal = (project) => {
+  const openProjectModal = (project:any) => {
     setSelectedProject(project)
     setIsModalOpen(true)
     document.body.style.overflow = "hidden"
@@ -172,7 +172,7 @@ export default function IndustrialConsultancy() {
         <CallToAction />
       </main>
 
-      <ProjectDetail isOpen={isModalOpen} project={selectedProject} onClose={closeProjectModal} />
+      {/* <ProjectDetail isOpen={isModalOpen} project={selectedProject} onClose={closeProjectModal} /> */}
 
       <Footer />
     </div>

@@ -58,13 +58,13 @@ export default function AlumniCard({ alumni, index, viewMode, onViewProfile }: A
             </div>
           )}
 
-          <button
+          {/* <button
             onClick={() => onViewProfile(alumni.id)}
             className="mt-2 text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center"
           >
             View Profile
             <ArrowUpRight size={14} className="ml-1" />
-          </button>
+          </button> */}
         </div>
       </motion.div>
     )
@@ -120,13 +120,13 @@ export default function AlumniCard({ alumni, index, viewMode, onViewProfile }: A
                 )}
               </div>
 
-              <button
+              {/* <button
                 onClick={() => onViewProfile(alumni.id)}
                 className="mt-4 md:mt-0 text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center"
               >
                 View Profile
                 <ArrowUpRight size={14} className="ml-1" />
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

@@ -60,13 +60,13 @@ export default function HeroSection({ onOpenProjectModal }: HeroSectionProps) {
               >
                 Explore Projects <ArrowRight size={18} />
               </motion.button>
-              <motion.button
+              {/* <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-6 py-3 bg-transparent border border-white/60 text-white rounded-lg font-medium flex items-center gap-2 hover:bg-white/10 transition-all"
               >
                 Partner With Us <Building size={18} />
-              </motion.button>
+              </motion.button> */}
             </div>
           </motion.div>
 

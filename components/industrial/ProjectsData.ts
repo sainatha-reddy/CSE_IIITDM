@@ -22,6 +22,19 @@ export const projects = [
     technologies: ["Machine Learning", "Computer Vision", "Image Processing", "Security Systems"],
   },
   {
+    "id": 14,
+    "title": "Banking  intelligence enhancement & OCR Enhancement Algorithm for Banking Intellgence & Automation",
+    pi: "Dr. Jagadeesh Kakarla",
+    type: "faculty",
+    "sponsor": "SimplyFI  Softech India Pvt Ltd",
+    "duration": "18 Months",
+    "value": "0",
+    "category": "completed",
+    "color": "blue",
+    "description": "Research project titled 'Bank ing  intelligence enhancement & OCR Enhancement Algorithm for Banking Intellgence & Automation' funded by SimplyFI  Softech India Pvt Ltd.",
+    "tags": ["Algorithms"]
+  },
+  {
     id: 2,
     title: "People Counter for Bus",
     type: "faculty",

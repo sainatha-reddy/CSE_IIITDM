@@ -7,8 +7,8 @@ import { Briefcase, Building, User, Users, DollarSign } from "lucide-react"
 
 // Statistics data
 const stats = [
-  { id: 1, label: "Total Projects", value: 5, icon: Briefcase },
-  { id: 2, label: "Industry Partners", value: 8, icon: Building },
+  { id: 1, label: "Total Projects", value: 6, icon: Briefcase },
+  { id: 2, label: "Industry Partners", value: 6, icon: Building },
   { id: 3, label: "Faculty Involved", value: 6, icon: User },
   { id: 4, label: "Students Engaged", value: 25, icon: Users },
   { id: 5, label: "Total Funding", value: "₹25L+", icon: DollarSign },

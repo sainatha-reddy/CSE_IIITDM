@@ -20,7 +20,8 @@ export default function CallToAction() {
           potential research partnerships.
         </p>
         <Link
-          href="/contact"
+          href="https://iiitdm.ac.in/sricce"
+          target="_blank"
           className="inline-flex items-center px-6 py-3 bg-white text-blue-800 rounded-md font-medium shadow-lg hover:bg-blue-50 transition-all duration-300 group"
         >
           Contact Us

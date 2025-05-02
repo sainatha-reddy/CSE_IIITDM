@@ -44,7 +44,7 @@ export default function Statistics() {
               </div>
               <div className="ml-4">
                 <p className="text-sm text-green-600 font-medium">Total Funding</p>
-                <h3 className="text-3xl font-bold text-gray-900 mt-1">₹{stats.totalFunding.toFixed(2)} Lakhs</h3>
+                <h3 className="text-3xl font-bold text-gray-900 mt-1">₹{stats.totalFunding.toFixed(2)} Lakhs +</h3>
               </div>
             </div>
           </motion.div>

@@ -110,14 +110,14 @@ export default function ProjectCard({ project, onOpenProjectModal }: ProjectCard
             ></div>
             <span className="text-sm text-gray-600 dark:text-gray-300">{project.status}</span>
           </div>
-          <motion.button
+          {/* <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => onOpenProjectModal(project)}
             className="px-4 py-2 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-lg font-medium flex items-center gap-1 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-all text-sm"
           >
             View Details <ChevronRight size={16} />
-          </motion.button>
+          </motion.button> */}
         </div>
       </div>
     </motion.div>

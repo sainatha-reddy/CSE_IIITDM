@@ -29,7 +29,7 @@ const awards = [
     students: ["Vignesh Sairaj", "Vijayaraghavan", "Sreeraj"],
     recognition: "Cleared Chennai Region and Participated in Regionals",
     year: 2017,
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg?height=200&width=300" ,
   },
   {
     id: 4,

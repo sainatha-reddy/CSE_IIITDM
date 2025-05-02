@@ -17,7 +17,7 @@ interface ProjectCardProps {
     color: string
     abstract: string
     keywords?: string[]
-    resources?: { type: string; url: string }[]
+    //resources?: { type: string; url: string }[]
   }
   onClick: (project: any) => void
   index: number
@@ -68,10 +68,10 @@ export default function ProjectCard({ project, onClick, index }: ProjectCardProp
               </span>
             )}
           </div>
-          <Button variant="ghost" className="text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-0 flex items-center">
+          {/* <Button variant="ghost" className="text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-0 flex items-center">
             View Details
             <ChevronRight className="ml-1 h-4 w-4" />
-          </Button>
+          </Button> */}
         </CardContent>
       </Card>
     </motion.div>

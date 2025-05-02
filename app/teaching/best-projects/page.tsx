@@ -395,7 +395,7 @@ export default function BestProjects() {
                     </div>
                   )}
 
-                  {selectedProject.resources && (
+                  {/* {selectedProject.resources && (
                     <div>
                       <h3 className="text-lg font-semibold mb-2 text-blue-900">Resources</h3>
                       <div className="flex flex-wrap gap-3">
@@ -429,7 +429,7 @@ export default function BestProjects() {
                         })}
                       </div>
                     </div>
-                  )}
+                  )} */}
                 </div>
               </>
             )}

@@ -212,70 +212,7 @@ export default function SidebarNews() {
         </CardContent>
       </MotionCard>
 
-      <MotionCard
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-        whileHover={{ scale: 1.02 }}
-        className="overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
-      >
-        <CardHeader className="bg-gradient-to-r from-[#003366] to-[#6495ED] py-4">
-          <CardTitle className="text-2xl font-bold text-white flex items-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="mr-2"
-            >
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-            </svg>
-            Announcements
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="pt-4">
-          <AnimatePresence mode="wait">
-            <motion.ul
-              key={currentAnnouncementsIndex}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.5 }}
-              className="space-y-4"
-            >
-              {announcementsData[currentAnnouncementsIndex].map((item, index) => (
-                <motion.li
-                  key={index}
-                  className={`border-b border-[#003366]/20 pb-2 cursor-pointer transition-all duration-300 ${
-                    hoveredItem.section === "announcements" && hoveredItem.index === index
-                      ? "bg-[#f5f8ff] pl-2 rounded"
-                      : ""
-                  }`}
-                  onMouseEnter={() => setHoveredItem({ section: "announcements", index })}
-                  onMouseLeave={() => setHoveredItem({ section: null, index: null })}
-                  whileHover={{ x: 5 }}
-                >
-                  <h4 className="font-semibold text-gray-800 transition-colors duration-300">{item.title}</h4>
-                  <p className="text-sm text-[#003366] transition-colors duration-300">{item.deadline}</p>
-                </motion.li>
-              ))}
-            </motion.ul>
-          </AnimatePresence>
-          <Button
-            variant="link"
-            className="mt-4 text-[#003366] hover:text-[#6495ED] transition-colors duration-300 group"
-          >
-            All Announcements
-            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
-          </Button>
-        </CardContent>
-      </MotionCard>
+      
     </div>
   )
 }

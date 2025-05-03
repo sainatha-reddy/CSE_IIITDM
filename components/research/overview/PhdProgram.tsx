@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Calendar, GraduationCap, Users, Clock, Award, ArrowRight } from "lucide-react"
+import { Calendar, GraduationCap, Users, Clock, Award, ArrowRight, FileText, CheckCircle } from "lucide-react"
 
 export default function PhdProgram() {
   return (
@@ -33,8 +33,7 @@ export default function PhdProgram() {
             viewport={{ once: true }}
             className="text-xl text-[#003366]/80 max-w-3xl mx-auto"
           >
-            Our PhD program is designed to nurture the next generation of researchers and innovators in computer
-            science.
+            The department invites applications for full-time Ph.D programme twice a year (Jan and July Sessions).
           </motion.p>
         </div>
 
@@ -47,47 +46,45 @@ export default function PhdProgram() {
             viewport={{ once: true }}
             className="space-y-6"
           >
-            <h3 className="text-2xl font-bold text-[#003366] mb-6">Program Overview</h3>
+            <h3 className="text-2xl font-bold text-[#003366] mb-6">Program Structure</h3>
 
             <div className="prose max-w-none text-[#003366]/80">
               <p>
-                The PhD program in Computer Science at IIITDM Kancheepuram offers a rigorous curriculum and research
-                opportunities in various cutting-edge areas. Our program is designed to develop independent researchers
-                who can contribute significantly to the field of computer science.
-              </p>
-              <p>
-                Students work closely with faculty mentors on research projects that address important challenges in the
-                field. The program emphasizes both theoretical foundations and practical applications, preparing
-                graduates for careers in academia, industry research labs, and technology innovation.
-              </p>
-              <p>
-                We offer full-time and part-time PhD programs to accommodate different student needs and backgrounds.
-                Generous fellowships and research assistantships are available for qualified candidates.
+                Ph.D programme consists of course work (4 courses), comprehensive viva (qualifier) and 
+                research contribution in one's specific area of interest.
               </p>
             </div>
 
             <div className="pt-4">
-              <h4 className="text-xl font-semibold text-[#003366] mb-4">Key Features</h4>
+              <h4 className="text-xl font-semibold text-[#003366] mb-4">Program Components</h4>
               <ul className="space-y-3">
                 <FeatureItem
-                  icon={<GraduationCap className="w-5 h-5" />}
-                  text="Mentorship from internationally recognized faculty"
+                  icon={<FileText className="w-5 h-5" />}
+                  text="Course work (4 courses)"
                 />
-                <FeatureItem icon={<Users className="w-5 h-5" />} text="Collaborative research environment" />
-                <FeatureItem icon={<Award className="w-5 h-5" />} text="Competitive stipends and fellowships" />
-                <FeatureItem icon={<Clock className="w-5 h-5" />} text="Flexible full-time and part-time options" />
+                <FeatureItem icon={<CheckCircle className="w-5 h-5" />} text="Comprehensive viva (qualifier)" />
+                <FeatureItem icon={<GraduationCap className="w-5 h-5" />} text="Research contribution in specific area of interest" />
+                <FeatureItem icon={<Calendar className="w-5 h-5" />} text="Applications accepted twice a year (Jan and July Sessions)" />
               </ul>
             </div>
 
             <div className="pt-4">
-              <Button className="bg-[#003366] hover:bg-[#003366]/90 text-white">
-                Apply for PhD Program
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+              <h4 className="text-xl font-semibold text-[#003366] mb-4">Evaluation</h4>
+              <div className="prose max-w-none text-[#003366]/80">
+                <p>
+                  If a student opts for the optional subject, then his/her performance will be assessed against 5 subjects, 
+                  otherwise 4 subjects.
+                </p>
+                <p className="text-sm italic mt-2">
+                  Note: One optional subject related to the research area.
+                </p>
+              </div>
             </div>
+
+            
           </motion.div>
 
-          {/* Right Column - Admission Process */}
+          {/* Right Column - Selection Process */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -97,12 +94,18 @@ export default function PhdProgram() {
             <Card className="shadow-lg border-[#6495ED]/20">
               <CardHeader className="bg-gradient-to-r from-[#003366] to-[#6495ED] text-white">
                 <CardTitle className="flex items-center text-2xl">
-                  <Calendar className="mr-2 h-6 w-6" />
-                  Admission Process
+                  <Users className="mr-2 h-6 w-6" />
+                  Selection Process
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
                 <div className="space-y-6">
+                  <div className="prose max-w-none text-[#003366]/80 mb-6">
+                    <p>
+                      The department conducts a written test and an interview to eligible candidates.
+                    </p>
+                  </div>
+                  
                   <AdmissionStep
                     number="01"
                     title="Application Submission"
@@ -110,28 +113,26 @@ export default function PhdProgram() {
                   />
                   <AdmissionStep
                     number="02"
-                    title="Entrance Examination"
-                    description="Qualified candidates take a written examination testing fundamental knowledge in computer science."
+                    title="Written Test"
+                    description="Eligible candidates will be invited to take a written test to assess subject knowledge."
                   />
                   <AdmissionStep
                     number="03"
                     title="Interview"
-                    description="Shortlisted candidates are invited for an interview with the faculty committee."
+                    description="Shortlisted candidates from the written test will proceed to an interview with faculty."
                   />
                   <AdmissionStep
                     number="04"
                     title="Admission Offer"
-                    description="Selected candidates receive admission offers with details about fellowships and start dates."
+                    description="Selected candidates receive admission offers for either January or July session."
                   />
                 </div>
 
                 <div className="mt-8 space-y-4">
-                  <h4 className="font-semibold text-[#003366]">Important Dates</h4>
+                  <h4 className="font-semibold text-[#003366]">Application Cycles</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <DateCard title="Application Deadline" date="April 15, 2023" />
-                    <DateCard title="Entrance Exam" date="May 20, 2023" />
-                    <DateCard title="Interview Dates" date="June 5-10, 2023" />
-                    <DateCard title="Program Start" date="August 1, 2023" />
+                    <DateCard title="January Session" date="Applications in October-November" />
+                    <DateCard title="July Session" date="Applications in April-May" />
                   </div>
                 </div>
               </CardContent>
@@ -143,7 +144,7 @@ export default function PhdProgram() {
   )
 }
 
-function FeatureItem({ icon, text }) {
+function FeatureItem({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
     <li className="flex items-center">
       <div className="w-8 h-8 rounded-full bg-[#6495ED]/20 flex items-center justify-center text-[#6495ED] mr-3">
@@ -154,7 +155,7 @@ function FeatureItem({ icon, text }) {
   )
 }
 
-function AdmissionStep({ number, title, description }) {
+function AdmissionStep({ number, title, description }: { number: string; title: string; description: string }) {
   return (
     <div className="flex">
       <div className="mr-4 flex-shrink-0">
@@ -170,7 +171,7 @@ function AdmissionStep({ number, title, description }) {
   )
 }
 
-function DateCard({ title, date }) {
+function DateCard({ title, date }: { title: string; date: string }) {
   return (
     <div className="bg-[#f5f8ff] p-3 rounded-lg border border-[#6495ED]/20">
       <div className="text-sm text-[#003366]/70">{title}</div>

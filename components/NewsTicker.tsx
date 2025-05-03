@@ -5,10 +5,11 @@ import { motion, AnimatePresence } from "framer-motion"
 import { ChevronRight, ChevronLeft } from "lucide-react"
 
 const news = [
-  "CS Department receives $5M grant for AI research",
-  "New Quantum Computing course launched for Fall 2023",
-  "Students win first place in national coding competition",
-  "Professor Johnson elected to National Academy of Engineering",
+  "Graduate Forum Best Paper Award at COMSNETS 2025 - Mr. Rajasekhar Dasari (CS22D0003)",
+  "MS Admit at Northwestern University - NIMMAGADDA SREE DHYUTI (CED 19)",
+  "MS Admit at Cornell University - Dikshanya (CED17)",
+  "MS Admit at University of Massachusetts Amherst - Susheel (COE19)",
+  "Direct-PhD Offer at IIT Madras - Rahul C S (COE18)",
 ]
 
 export default function NewsTicker() {
@@ -48,7 +49,7 @@ export default function NewsTicker() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center flex-grow">
-            <span className="font-bold mr-4 bg-[#6495ED] px-3 py-1 rounded text-white">Latest:</span>
+            <span className="font-bold mr-4 bg-[#6495ED] px-3 py-1 rounded text-white">Latest Achievements:</span>
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentNews}
@@ -68,14 +69,14 @@ export default function NewsTicker() {
             <button
               onClick={handlePrev}
               className="text-white/70 hover:text-white transition-colors duration-300 focus:outline-none"
-              aria-label="Previous news"
+              aria-label="Previous achievement"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
             <button
               onClick={handleNext}
               className="text-white/70 hover:text-white transition-colors duration-300 focus:outline-none"
-              aria-label="Next news"
+              aria-label="Next achievement"
             >
               <ChevronRight className="h-5 w-5" />
             </button>

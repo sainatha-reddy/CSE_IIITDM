@@ -200,7 +200,7 @@ export default function Home() {
                   <CardContent className="p-6">
                     <div className="prose max-w-none">
                       <motion.p
-                        className="mb-4 group-hover:text-[#6495ED] transition-colors duration-300"
+                        className="mb-4 group-hover: transition-colors duration-300"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
@@ -210,7 +210,7 @@ export default function Home() {
                         recommendations and is the first of its kind engineering program offered in India.
                       </motion.p>
                       <motion.p
-                        className="mb-4 group-hover:text-[#6495ED] transition-colors duration-300"
+                        className="mb-4 group-hover: transition-colors duration-300"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.1 }}
@@ -223,7 +223,7 @@ export default function Home() {
                         successful creation of products requiring hardware - software interactions.
                       </motion.p>
                       <motion.p
-                        className="group-hover:text-[#6495ED] transition-colors duration-300"
+                        className="group-hover: transition-colors duration-300"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.2 }}
@@ -233,10 +233,7 @@ export default function Home() {
                         studies that are open to conventional Computer Science engineers.
                       </motion.p>
                     </div>
-                    <Button className="mt-6 bg-[#003366] hover:bg-[#6495ED] text-white transition-colors duration-300 shadow-md hover:shadow-lg">
-                      Read More
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
+                   
                   </CardContent>
                 </Card>
 

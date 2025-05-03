@@ -1,13 +1,13 @@
 "use client"
 
 import type React from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ChevronRight, Linkedin, Github, Mail, MapPin } from "lucide-react"
+import FacultyImage from "./FacultyImage"
 
 interface FacultyListProps {
   faculty: any
@@ -28,12 +28,13 @@ const FacultyList: React.FC<FacultyListProps> = ({ faculty, onSelect }) => {
           <div className="flex flex-col md:flex-row">
             <div className="md:w-1/4 p-6 flex flex-col md:flex-row items-center">
               <div className="w-24 h-24 md:w-16 md:h-16 rounded-full overflow-hidden mb-4 md:mb-0 md:mr-4">
-                <Image
-                  src={faculty.image || "/placeholder.svg"}
+                <FacultyImage
+                  src={faculty.image}
                   alt={faculty.name}
                   width={96}
                   height={96}
-                  className="object-cover"
+                  className="rounded-full"
+                  autoSize={true}
                 />
               </div>
               <div className="text-center md:text-left">

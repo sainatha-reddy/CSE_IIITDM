@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { type facultyData, getRandomGradient } from "./data"
+import FacultyImage from "./FacultyImage"
 
 interface FacultyGridProps {
   filteredFaculty: typeof facultyData
@@ -62,8 +63,15 @@ export default function FacultyGrid({ filteredFaculty, setSelectedFaculty }: Fac
               <div className="relative">
                 <div className={`h-3 bg-gradient-to-r ${getRandomGradient(faculty.id)}`}></div>
                 <div className="p-6 pb-0 flex justify-center">
-                  <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-lg">
-                    <Image src={faculty.image || "/placeholder.svg"} alt={faculty.name} fill className="object-cover" />
+                  <div className="w-full h-48 md:h-60 relative rounded-t-xl overflow-hidden">
+                    <FacultyImage 
+                      src={faculty.image} 
+                      alt={faculty.name} 
+                      className="object-cover"
+                      width={300}
+                      height={240}
+                      autoSize={true}
+                    />
                   </div>
                 </div>
               </div>

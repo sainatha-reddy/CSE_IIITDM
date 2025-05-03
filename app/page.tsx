@@ -275,7 +275,7 @@ export default function Home() {
                           { label: "DASA", value: 1 },
                         ]}
                       />
-                      <IntakeItem icon={<Users className="w-6 h-6" />} program="Ph.D" total={3} />
+                      <IntakeItem                        icon={<Code className="w-6 h-6" />}                        program="Dual Degree in CSE"                        total={60}                        breakdown={[                          { label: "JEE based", value: 57 },                          { label: "DASA", value: 3 },                        ]}                      />                      <IntakeItem icon={<Users className="w-6 h-6" />} program="Ph.D" total={3} />
                     </ul>
                     <Button
                       variant="outline"

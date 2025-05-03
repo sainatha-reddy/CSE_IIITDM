@@ -47,9 +47,9 @@ export default function HeroSection() {
       ],
     },
     {
-      id: "innovation",
-      title: "Industry Collaboration",
-      subtitle: "Bridging Academia and Enterprise",
+      id: "achievements",
+      title: "Achievements",
+      subtitle: "Our Achievements",
       description:
         "We partner with leading tech companies to create opportunities for our students and drive innovation through joint research initiatives and technology transfer programs.",
       image: "/assets/a8.jpg",
@@ -77,9 +77,19 @@ export default function HeroSection() {
   }, [sections.length])
 
   // Handle manual section change
-  const changeSection = (index) => {
+  const changeSection = (index: number) => {
     setDirection(index > activeSection ? 1 : -1)
     setActiveSection(index)
+  }
+
+  // Handle explore button click
+  const handleExploreClick = (id: string) => {
+    if (id === "achievements") {
+      const achievementsElement = document.getElementById("sidebar-achievements");
+      if (achievementsElement) {
+        achievementsElement.scrollIntoView({ behavior: "smooth" });
+      }
+    }
   }
 
   // Scroll to content
@@ -92,7 +102,7 @@ export default function HeroSection() {
 
   // Variants for slide animations
   const slideVariants = {
-    enter: (direction) => ({
+    enter: (direction: number) => ({
       x: direction > 0 ? "100%" : "-100%",
       opacity: 0,
     }),
@@ -100,7 +110,7 @@ export default function HeroSection() {
       x: 0,
       opacity: 1,
     },
-    exit: (direction) => ({
+    exit: (direction: number) => ({
       x: direction > 0 ? "-100%" : "100%",
       opacity: 0,
     }),
@@ -232,6 +242,7 @@ export default function HeroSection() {
                     <div className="flex flex-wrap gap-3 pt-2">
                       <Button
                         className={`${sections[activeSection].accent.replace("bg-", "bg-")} text-white hover:opacity-90 rounded-md`}
+                        onClick={() => handleExploreClick(sections[activeSection].id)}
                       >
                         Explore{" "}
                         {sections[activeSection].id.charAt(0).toUpperCase() + sections[activeSection].id.slice(1)}
@@ -285,23 +296,8 @@ export default function HeroSection() {
                           </div>
                         </div>
 
-                        {/* Feature highlights */}
-                        <div className="space-y-2 mb-5">
-                          {[1, 2, 3].map((i) => (
-                            <div key={i} className="flex items-center space-x-2">
-                              <div className={`w-1.5 h-1.5 rounded-full ${sections[activeSection].accent}`} />
-                              <div className="text-white/80 text-sm">Feature highlight {i}</div>
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* Button */}
-                        <button
-                          className={`flex items-center space-x-2 px-4 py-2 rounded-md ${sections[activeSection].accent} text-white text-sm`}
-                        >
-                          <span>View Details</span>
-                          <ExternalLink className="h-4 w-4 ml-1.5" />
-                        </button>
+                        {/* Feature highlights - removed text */}
+                        
                       </div>
                     </div>
 

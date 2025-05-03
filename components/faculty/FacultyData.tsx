@@ -58,16 +58,29 @@ export const fetchFacultyData = async () => {
 
 const transformFacultyData = (rawFaculty: any[]): Faculty[] => {
   return rawFaculty.map((item: any, index: number) => {
+    // Parse research interests from schoolName1 (which contains interests)
     const parsedCourses = item.schoolName1
       ? item.schoolName1.split("\r\n").map((i: string) => i.trim()).filter(Boolean)
       : [];
+      
+    // Special handling for Dr. Noor Mahammad - remove "Visit" from research interests
+    let cleanedInterests = parsedCourses;
+    if (item.nickname && (
+        item.nickname.toLowerCase().includes("noor mahammad") || 
+        item.nickname.toLowerCase().includes("dr. noor") || 
+        item.nickname.toLowerCase().includes("dr noor")
+      )) {
+      cleanedInterests = parsedCourses.map((interest: string) => 
+        interest.replace(/\bVisit\b/g, "").trim()
+      );
+    }
 
     return {
       id: index + 1,
       name: item.nickname || "Unknown",
       position: item.desig || "Faculty",
       image: item.localimg ? `http://mis.iiitdm.ac.in/Profile/images/Profile/${item.localimg}` : "/placeholder.svg?height=300&width=300",
-      interests: parsedCourses,
+      interests: cleanedInterests,
       email: item.email || "unknown@example.com",
       phone: item.schoolFrom || "+91-XXXXXXXXXX",
       office: item.schoolTo || "Unknown Room",
@@ -79,7 +92,7 @@ const transformFacultyData = (rawFaculty: any[]): Faculty[] => {
       publications: 0,
       projects: 0,
       students: 0,
-      courses: parsedCourses,
+      courses: cleanedInterests,
       socialLinks: {
         linkedin: "https://linkedin.com/in/",
         github: "https://github.com/",

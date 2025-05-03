@@ -993,7 +993,7 @@ export default function LectureNotesPage() {
                 </motion.div>
               </TabsContent>
 
-              <TabsContent value="my-courses" className="mt-0">
+              {/* <TabsContent value="my-courses" className="mt-0">
                 <div className="p-8 text-center bg-white rounded-lg shadow-sm">
                   <BookText className="h-12 w-12 mx-auto text-gray-400 mb-4" />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">Sign in to view your course materials</h3>
@@ -1004,15 +1004,15 @@ export default function LectureNotesPage() {
                     Sign In
                   </button>
                 </div>
-              </TabsContent>
+              </TabsContent> */}
             </Tabs>
           </div>
         </section>
 
         {/* Instructor Selection Section */}
-        <InstructorSelection instructors={instructors} onSelect={setSelectedInstructor} />
+        {/* <InstructorSelection instructors={instructors} onSelect={setSelectedInstructor} /> */}
 
-        <AdditionalResources />
+        {/* <AdditionalResources /> */}
       </main>
 
       <Footer />

@@ -63,14 +63,14 @@ export default function HeroSection() {
             transition={{ delay: 0.6, duration: 0.5 }}
             className="flex flex-col sm:flex-row justify-center gap-4 mb-10"
           >
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+            {/* <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
               <FileText className="mr-2 h-5 w-5" />
               Browse All Notes
             </Button>
             <Button size="lg" variant="outline" className="border-blue-200 text-blue-600">
               <Download className="mr-2 h-5 w-5" />
               Download Resources
-            </Button>
+            </Button> */}
           </motion.div>
 
           <motion.div

@@ -64,12 +64,11 @@ export default function TeachingOverview() {
         <TeachingHero />
         <TeachingPhilosophy />
         <TeachingMethodology />
-        <TeachingStats />
         <TeachingResources />
         <TeachingTestimonials />
 
         {/* CTA Section */}
-        <section className="py-16 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+        {/* <section className="py-16 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <motion.div
@@ -94,7 +93,7 @@ export default function TeachingOverview() {
               </motion.div>
             </div>
           </div>
-        </section>
+        </section> */}
       </main>
 
       <Footer />

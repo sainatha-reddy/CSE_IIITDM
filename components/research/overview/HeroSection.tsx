@@ -99,7 +99,9 @@ export default function HeroSection() {
             <Button
               size="lg"
               className="bg-[#003366] text-white hover:bg-[#003366]/90 shadow-lg shadow-[#003366]/20 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+              onClick={() => window.scrollTo({ top: document.getElementById("research-areas")?.offsetTop, behavior: "smooth" })}
             >
+              
               Explore Research Areas
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
@@ -107,6 +109,7 @@ export default function HeroSection() {
               size="lg"
               variant="outline"
               className="border-2 border-[#6495ED] text-[#003366] hover:bg-[#6495ED]/10 hover:border-[#003366] hover:-translate-y-0.5 transition-all duration-300"
+              onClick={() => window.open("https://iiitdm.ac.in/admissions/phd", "_blank")}
             >
               PhD Admissions
               <BookOpen className="ml-2 h-4 w-4" />

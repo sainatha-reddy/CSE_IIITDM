@@ -10,7 +10,6 @@ import PublicationFilters from "@/components/research/publications/PublicationFi
 import PublicationsList from "@/components/research/publications/PublicationsList"
 import PublicationDetail from "@/components/research/publications/PublicationDetail"
 import Pagination from "@/components/research/publications/Pagination"
-import Statistics from "@/components/research/publications/Statistics"
 import { AlertCircle, Loader2 } from "lucide-react"
 import FacultyImage from "@/components/faculty/FacultyImage"
 
@@ -35,6 +34,58 @@ interface FacultyMember {
   area: string
   image: string
   publications: Publication[]
+  publicationCount?: number
+  email?: string
+}
+
+// Helper function to split any kind of line breaks (reused from FacultyDetail.tsx)
+const splitLines = (text: string): string[] => {
+  if (!text) return [];
+  // Handle all types of line breaks: \r\n (Windows), \n (Unix), \r (Old Mac)
+  return text.split(/\r\n|\r|\n/).filter(line => line.trim().length > 0);
+};
+
+// Helper function to parse publication citations (reused from FacultyDetail.tsx)
+function parsePublicationCitation(citation: string): {
+  authors?: string;
+  title?: string;
+  journal?: string;
+  year?: string;
+  doi?: string;
+} {
+  const result: {
+    authors?: string;
+    title?: string;
+    journal?: string;
+    year?: string;
+    doi?: string;
+  } = {};
+  
+  // Extract DOI if present
+  const doiMatch = citation.match(/https?:\/\/doi\.org\/([^\s]+)/);
+  if (doiMatch) {
+    result.doi = doiMatch[1];
+  }
+  
+  // Extract year if present (common pattern is 4 digits in parentheses or after year indicators)
+  const yearMatch = citation.match(/\((\d{4})\)/) || citation.match(/(\d{4})/) || citation.match(/Volume \d+.* (\d{4})/);
+  if (yearMatch) {
+    result.year = yearMatch[1];
+  }
+  
+  // Try to extract authors (often before the first period, or before title)
+  const authorsMatch = citation.match(/^(.+?)\./) || citation.match(/^(.+?),/);
+  if (authorsMatch) {
+    result.authors = authorsMatch[1].trim();
+  }
+  
+  // Try to extract journal/venue (often in italics or between quotes)
+  const journalMatch = citation.match(/[\.,]\s*["'](.+?)["']/) || citation.match(/in\s+(.+?),/i);
+  if (journalMatch) {
+    result.journal = journalMatch[1].trim();
+  }
+  
+  return result;
 }
 
 // Fallback component for when data is loading
@@ -80,7 +131,7 @@ export default function PublicationsPage() {
     const fetchFacultyData = async () => {
       setLoading(true)
       try {
-        // Fetch faculty list from our API
+        // First fetch the faculty list with basic info
         const response = await fetch('/api/faculty', {
           cache: 'no-store',
           signal: AbortSignal.timeout(10000) // 10 second timeout
@@ -96,41 +147,104 @@ export default function PublicationsPage() {
           throw new Error('Invalid data structure returned from API')
         }
 
-        // Transform API data to our format
-        const transformedData: FacultyMember[] = data.faculty.map((faculty: any, index: number) => {
-          // Extract research interests to use as publication keywords
-          const interests = faculty.schoolName1 
-            ? faculty.schoolName1.split(/[\r\n,]+/).map((i: string) => i.trim()).filter(Boolean)
-            : ['Computer Science'];
+        // Transform API data to our format, now processing them with email-based detail fetching
+        const transformedData: FacultyMember[] = await Promise.all(
+          data.faculty.map(async (faculty: any, index: number) => {
+            // Only proceed with email-based fetching if we have an email
+            let publications: Publication[] = [];
+
+            if (faculty.email) {
+              try {
+                // Fetch detailed faculty information using email
+                const detailResponse = await fetch(`/api/faculty/${encodeURIComponent(faculty.email)}`, {
+                  cache: 'no-store',
+                  signal: AbortSignal.timeout(8000) // 8 second timeout per faculty
+                });
+
+                if (detailResponse.ok) {
+                  const detailData = await detailResponse.json();
+                  const facultyInfo = detailData.facinfo && detailData.facinfo.length > 0 
+                    ? detailData.facinfo[0] 
+                    : null;
+
+                  // Process publications if we have detailed data
+                  if (facultyInfo) {
+                    // Extract publications from pubCite3 and pubCite4 fields
+                    if (facultyInfo.pubCite3) {
+                      const pubList = splitLines(facultyInfo.pubCite3);
+                      pubList.forEach((pub: string, idx: number) => {
+                        const parts = parsePublicationCitation(pub);
+                        
+                        publications.push({
+                          id: idx,
+                          title: parts.title || pub.trim(),
+                          authors: parts.authors || 'Unknown',
+                          venue: parts.journal || 'Unknown Journal/Conference',
+                          year: parts.year ? parseInt(parts.year) : 2023,
+                          type: (parts.journal || '').toLowerCase().includes('journal') ? 'journal' : 'conference',
+                          doi: parts.doi || '',
+                          citations: Math.floor(Math.random() * 10), // Still random as citation data isn't available
+                          abstract: 'Abstract not available',
+                          keywords: facultyInfo.schoolName1 
+                            ? facultyInfo.schoolName1.split(/[\r\n,]+/).map((i: string) => i.trim()).filter(Boolean)
+                            : ['Computer Science']
+                        });
+                      });
+                    }
                     
-          // Generate mock publications data for each faculty
-          const publications = generateMockPublications(
-            faculty.nickname || 'Unknown Faculty', 
-            3 + (index % 5),
-            interests
-          );
-          
-          // Improved image URL construction with multiple fallbacks
-          let imageUrl = "/placeholder.svg";
-          
-          // First try localimg from our IIITDM server
-          if (faculty.localimg) {
-            imageUrl = `https://old.iiitdm.ac.in/img/faculty/${faculty.localimg}`;
-          } 
-          // Then try the pic field if it exists and is a valid URL
-          else if (faculty.pic && faculty.pic !== 'null' && faculty.pic.startsWith('http')) {
-            imageUrl = faculty.pic;
-          }
-          
-          return {
-            id: index + 1,
-            name: faculty.nickname || 'Unknown Faculty',
-            title: faculty.desig || 'Faculty',
-            area: faculty.schoolName1 || 'Computer Science',
-            image: imageUrl,
-            publications
-          };
-        });
+                    if (facultyInfo.pubCite4) {
+                      const pubList = splitLines(facultyInfo.pubCite4);
+                      pubList.forEach((pub: string, idx: number) => {
+                        const parts = parsePublicationCitation(pub);
+                        
+                        publications.push({
+                          id: publications.length + idx,
+                          title: parts.title || pub.trim(),
+                          authors: parts.authors || 'Unknown',
+                          venue: parts.journal || 'Unknown Journal/Conference',
+                          year: parts.year ? parseInt(parts.year) : 2023,
+                          type: (parts.journal || '').toLowerCase().includes('journal') ? 'journal' : 'conference',
+                          doi: parts.doi || '',
+                          citations: Math.floor(Math.random() * 10), // Still random as citation data isn't available
+                          abstract: 'Abstract not available',
+                          keywords: facultyInfo.schoolName1 
+                            ? facultyInfo.schoolName1.split(/[\r\n,]+/).map((i: string) => i.trim()).filter(Boolean) 
+                            : ['Computer Science']
+                        });
+                      });
+                    }
+                  }
+                }
+              } catch (detailError) {
+                console.warn(`Error fetching details for faculty ${faculty.nickname}:`, detailError);
+                // Continue with empty publications if detail fetch fails
+              }
+            }
+            
+            // Improved image URL construction with multiple fallbacks
+            let imageUrl = "/placeholder.svg";
+            
+            // First try localimg from our IIITDM server
+            if (faculty.localimg) {
+              imageUrl = `https://old.iiitdm.ac.in/img/faculty/${faculty.localimg}`;
+            } 
+            // Then try the pic field if it exists and is a valid URL
+            else if (faculty.pic && faculty.pic !== 'null' && faculty.pic.startsWith('http')) {
+              imageUrl = faculty.pic;
+            }
+            
+            return {
+              id: index + 1,
+              name: faculty.nickname || 'Unknown Faculty',
+              title: faculty.desig || 'Faculty',
+              area: faculty.schoolName1 || 'Computer Science',
+              image: imageUrl,
+              publications,
+              publicationCount: publications.length,
+              email: faculty.email // Store email for potential later use
+            };
+          })
+        );
 
         setFacultyData(transformedData)
         setError(null)
@@ -148,80 +262,6 @@ export default function PublicationsPage() {
     fetchFacultyData()
   }, [])
 
-  // Mock publication generator function
-  const generateMockPublications = (facultyName: string, count: number, interests: string[] = []): Publication[] => {
-    const types = ['journal', 'conference', 'book', 'chapter']
-    const years = [2023, 2022, 2021, 2020, 2019]
-    const venues = [
-      'IEEE Transactions on Knowledge and Data Engineering',
-      'ACM Transactions on Database Systems',
-      'International Conference on Machine Learning (ICML)',
-      'Conference on Computer Vision and Pattern Recognition (CVPR)',
-      'Journal of Artificial Intelligence Research'
-    ]
-    
-    // Use faculty interests as keywords if available, otherwise use default keywords
-    const keywordsList = interests.length > 0 
-      ? [interests] 
-      : [
-          ['Machine Learning', 'Deep Learning', 'Neural Networks'],
-          ['Data Mining', 'Knowledge Discovery', 'Big Data'],
-          ['Computer Vision', 'Image Processing', 'Pattern Recognition'],
-          ['Natural Language Processing', 'Text Mining', 'Information Retrieval'],
-          ['Algorithms', 'Data Structures', 'Complexity']
-        ];
-
-    return Array.from({ length: count }, (_, i) => ({
-      id: i + 1,
-      title: `${getRandomTitle()} ${i + 1}`,
-      authors: `${facultyName}, ${getRandomCoauthors()}`,
-      venue: venues[Math.floor(Math.random() * venues.length)],
-      year: years[Math.floor(Math.random() * years.length)],
-      type: types[Math.floor(Math.random() * types.length)],
-      doi: `10.1109/TKDE.2023.${1000000 + Math.floor(Math.random() * 9000000)}`,
-      citations: Math.floor(Math.random() * 30),
-      abstract: `This paper presents a novel approach to ${getRandomTopic()}, demonstrating significant improvements over existing methods.`,
-      keywords: keywordsList[Math.floor(Math.random() * keywordsList.length)]
-    }));
-  }
-
-  // Helper functions for mock data
-  const getRandomTitle = () => {
-    const adjectives = ['Novel', 'Efficient', 'Robust', 'Adaptive', 'Advanced']
-    const approaches = ['Approach', 'Method', 'Framework', 'System', 'Technique']
-    const topics = ['Machine Learning', 'Data Mining', 'Computer Vision', 'Natural Language Processing', 'Network Security']
-    
-    return `A ${adjectives[Math.floor(Math.random() * adjectives.length)]} ${approaches[Math.floor(Math.random() * approaches.length)]} for ${topics[Math.floor(Math.random() * topics.length)]}`
-  }
-
-  const getRandomCoauthors = () => {
-    const lastNames = ['Kumar', 'Singh', 'Reddy', 'Sharma', 'Patel', 'Gupta']
-    const count = 1 + Math.floor(Math.random() * 3)
-    const coauthors = []
-    
-    for (let i = 0; i < count; i++) {
-      const initial = String.fromCharCode(65 + Math.floor(Math.random() * 26))
-      coauthors.push(`${initial}. ${lastNames[Math.floor(Math.random() * lastNames.length)]}`)
-    }
-    
-    return coauthors.join(', ')
-  }
-
-  const getRandomTopic = () => {
-    const topics = [
-      'deep learning for computer vision',
-      'natural language processing',
-      'graph neural networks',
-      'federated learning',
-      'reinforcement learning',
-      'knowledge graph reasoning',
-      'explainable AI',
-      'privacy-preserving machine learning'
-    ]
-    
-    return topics[Math.floor(Math.random() * topics.length)]
-  }
-
   // Fallback data in case API fails
   const getFallbackFacultyData = (): FacultyMember[] => {
     return [
@@ -231,7 +271,33 @@ export default function PublicationsPage() {
         title: "Professor",
         area: "Image Processing, Biometrics, Pattern Recognition",
         image: "/placeholder.svg?height=300&width=300",
-        publications: generateMockPublications("Masilamani V", 4, ['Image Processing', 'Biometrics', 'Pattern Recognition'])
+        publications: [
+          {
+            id: 1,
+            title: "Recent Advances in Image Processing Techniques",
+            authors: "Masilamani V, K. Patel",
+            venue: "IEEE Transactions on Image Processing",
+            year: 2022,
+            type: "journal",
+            doi: "10.1109/TIP.2022.123456",
+            citations: 15,
+            abstract: "This paper reviews recent advances in the field of image processing.",
+            keywords: ["Image Processing", "Biometrics", "Pattern Recognition"]
+          },
+          {
+            id: 2,
+            title: "Biometric Authentication Systems: A Survey",
+            authors: "Masilamani V, S. Kumar",
+            venue: "International Conference on Security and Privacy",
+            year: 2021,
+            type: "conference",
+            doi: "10.1109/ICSP.2021.987654",
+            citations: 8,
+            abstract: "This paper presents a survey of biometric authentication systems.",
+            keywords: ["Biometrics", "Authentication", "Security"]
+          }
+        ],
+        publicationCount: 2
       },
       {
         id: 2,
@@ -239,7 +305,33 @@ export default function PublicationsPage() {
         title: "Associate Professor",
         area: "High Performance Architectures, VLSI Design, High Speed Networks",
         image: "/placeholder.svg?height=300&width=300",
-        publications: generateMockPublications("Noor Mahammad", 3, ['High Performance Architectures', 'VLSI Design', 'High Speed Networks'])
+        publications: [
+          {
+            id: 1,
+            title: "High Performance Computing Architectures for Edge Computing",
+            authors: "Noor Mahammad, R. Singh",
+            venue: "IEEE Transactions on Computers",
+            year: 2022,
+            type: "journal",
+            doi: "10.1109/TC.2022.246810",
+            citations: 12,
+            abstract: "This paper presents novel architectures for edge computing.",
+            keywords: ["High Performance Computing", "Edge Computing", "Architectures"]
+          },
+          {
+            id: 2,
+            title: "VLSI Design Optimization for IoT Devices",
+            authors: "Noor Mahammad, P. Reddy",
+            venue: "ACM International Symposium on Low Power Electronics and Design",
+            year: 2021,
+            type: "conference",
+            doi: "10.1145/ISLPED.2021.135790",
+            citations: 7,
+            abstract: "This paper discusses VLSI design optimization for IoT devices.",
+            keywords: ["VLSI Design", "IoT", "Low Power Electronics"]
+          }
+        ],
+        publicationCount: 2
       }
     ]
   }
@@ -281,22 +373,6 @@ export default function PublicationsPage() {
     setCurrentPage(1)
   }, [searchQuery, yearFilter, typeFilter, selectedFaculty])
 
-  // Calculate statistics data
-  const publicationsByYear = years
-    .map((year) => ({
-      year,
-      count: faculty?.publications.filter((pub) => pub.year === year).length || 0,
-    }))
-    .filter((item) => item.count > 0)
-    .sort((a, b) => a.year - b.year)
-
-  const publicationsByType = publicationTypes
-    .map((type) => ({
-      type,
-      count: faculty?.publications.filter((pub) => pub.type === type).length || 0,
-    }))
-    .filter((item) => item.count > 0)
-
   // Reset filters
   const handleResetFilters = () => {
     setSearchQuery("")
@@ -324,7 +400,7 @@ export default function PublicationsPage() {
               <div className="lg:col-span-1">
                 <Suspense fallback={<div className="h-96 bg-gray-100 rounded-xl animate-pulse"></div>}>
                   <FacultySelector
-                    facultyData={facultyData}
+                    facultyData={facultyData as any}
                     selectedFaculty={selectedFaculty}
                     onSelectFaculty={setSelectedFaculty}
                   />
@@ -364,11 +440,12 @@ export default function PublicationsPage() {
                         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
                           <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
                             <FacultyImage
-                              src={faculty?.image}
+                              src={faculty?.image || null}
                               alt={faculty?.name || "Faculty"}
                               className="rounded-full"
                               width={96}
                               height={96}
+                              autoSize={true}
                             />
                           </div>
                           <div>
@@ -434,13 +511,6 @@ export default function PublicationsPage() {
                         </div>
                       </div>
                     </Suspense>
-
-                    {/* Statistics Section */}
-                    {faculty && faculty.publications.length > 0 && (
-                      <Suspense fallback={<div className="h-48 bg-gray-100 rounded-xl animate-pulse mb-6"></div>}>
-                        <Statistics publicationsByYear={publicationsByYear} publicationsByType={publicationsByType} />
-                      </Suspense>
-                    )}
 
                     {/* Search and Filters */}
                     <Suspense fallback={<div className="h-24 bg-gray-100 rounded-xl animate-pulse mb-6"></div>}>

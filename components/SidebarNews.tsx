@@ -26,19 +26,19 @@ const newsData = [
 
 const achievementsData = [
   [
-    { title: "Best Paper Award at ICML 2023", person: "Dr. Jane Doe" },
-    { title: "Google Research Grant", person: "AI Lab" },
-    { title: "ACM Fellowship", person: "Prof. John Smith" },
+    { title: "Graduate Forum Best Paper Award at COMSNETS 2025", person: "Mr. Rajasekhar Dasari (CS22D0003)" },
+    { title: "MS Admit at Northwestern University", person: "NIMMAGADDA SREE DHYUTI (CED 19)" },
+    { title: "MS Admit at Cornell University", person: "Dikshanya (CED17)" },
   ],
   [
-    { title: "IEEE Young Researcher Award", person: "Dr. Alex Johnson" },
-    { title: "Microsoft AI for Earth Grant", person: "Climate Tech Team" },
-    { title: "National Science Foundation Award", person: "Dr. Emily Chen" },
+    { title: "MS Admit at University of Massachusetts Amherst", person: "Susheel (COE19)" },
+    { title: "Direct-PhD Offer at IIT Madras", person: "Rahul C S (COE18)" },
+    { title: "Graduate Forum Best Paper Award at COMSNETS 2025", person: "Mr. Rajasekhar Dasari (CS22D0003)" },
   ],
   [
-    { title: "Best Demo at SIGGRAPH 2023", person: "VR Research Group" },
-    { title: "IBM Quantum Computing Prize", person: "Quantum Lab" },
-    { title: "ACM SIGCHI Best Paper", person: "HCI Research Team" },
+    { title: "MS Admit at Cornell University", person: "Dikshanya (CED17)" },
+    { title: "MS Admit at University of Massachusetts Amherst", person: "Susheel (COE19)" },
+    { title: "Direct-PhD Offer at IIT Madras", person: "Rahul C S (COE18)" },
   ],
 ]
 
@@ -66,7 +66,7 @@ export default function SidebarNews() {
   const [currentNewsIndex, setCurrentNewsIndex] = useState(0)
   const [currentAchievementsIndex, setCurrentAchievementsIndex] = useState(0)
   const [currentAnnouncementsIndex, setCurrentAnnouncementsIndex] = useState(0)
-  const [hoveredItem, setHoveredItem] = useState({ section: null, index: null })
+  const [hoveredItem, setHoveredItem] = useState<{section: string | null, index: number | null}>({ section: null, index: null })
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -152,6 +152,7 @@ export default function SidebarNews() {
         transition={{ duration: 0.5, delay: 0.2 }}
         whileHover={{ scale: 1.02 }}
         className="overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
+        id="sidebar-achievements"
       >
         <CardHeader className="bg-gradient-to-r from-[#003366] to-[#6495ED] py-4">
           <CardTitle className="text-2xl font-bold text-white flex items-center">

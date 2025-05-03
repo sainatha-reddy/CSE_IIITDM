@@ -27,20 +27,6 @@ export default function TeachingResources() {
       category: "materials",
     },
     {
-      title: "Time Table",
-      icon: <Calendar className="w-8 h-8" />,
-      description: "Current semester schedule for all courses, labs, and other academic activities.",
-      link: "/teaching/time-table",
-      category: "schedule",
-    },
-    {
-      title: "Online Electives",
-      icon: <Lightbulb className="w-8 h-8" />,
-      description: "Additional online courses and electives to supplement the core curriculum.",
-      link: "/teaching/online-electives",
-      category: "electives",
-    },
-    {
       title: "Best Projects",
       icon: <Award className="w-8 h-8" />,
       description: "Showcase of outstanding student projects that demonstrate excellence in application of concepts.",

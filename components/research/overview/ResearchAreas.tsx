@@ -3,7 +3,32 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { BrainCircuit, Database, Network, Shield, Cpu, Code, Layers, ChevronRight } from "lucide-react"
+import { BrainCircuit, Database, Network, Shield, Cpu, Code, Layers, ChevronRight, X } from "lucide-react"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogPortal, DialogOverlay } from "@/components/ui/dialog"
+import * as DialogPrimitive from "@radix-ui/react-dialog"
+import { cn } from "@/lib/utils"
+import * as React from "react"
+
+// Custom DialogContent without the built-in close button
+const DialogContentCustom = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+>(({ className, children, ...props }, ref) => (
+  <DialogPortal>
+    <DialogOverlay />
+    <DialogPrimitive.Content
+      ref={ref}
+      className={cn(
+        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </DialogPrimitive.Content>
+  </DialogPortal>
+))
+DialogContentCustom.displayName = DialogPrimitive.Content.displayName
 
 const researchAreas = [
   {
@@ -108,6 +133,11 @@ const researchAreas = [
 
 export default function ResearchAreas() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null)
+  const [selectedArea, setSelectedArea] = useState<typeof researchAreas[0] | null>(null)
+
+  const handleCardClick = (area: typeof researchAreas[0]) => {
+    setSelectedArea(area)
+  }
 
   return (
     <section className="py-20 bg-gradient-to-br from-white to-[#f5f8ff]">
@@ -152,6 +182,7 @@ export default function ResearchAreas() {
               whileHover={{ scale: 1.03, y: -5 }}
               onMouseEnter={() => setHoveredCard(area.id)}
               onMouseLeave={() => setHoveredCard(null)}
+              onClick={() => handleCardClick(area)}
               className="cursor-pointer"
             >
               <Card className="h-full overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border-t-4 border-[#003366]">
@@ -196,6 +227,39 @@ export default function ResearchAreas() {
           ))}
         </div>
       </div>
+
+      <Dialog open={selectedArea !== null} onOpenChange={(open) => !open && setSelectedArea(null)}>
+        <DialogContentCustom className="sm:max-w-md p-0 border-none overflow-hidden bg-white rounded-xl shadow-xl">
+          <DialogHeader className={`bg-gradient-to-r ${selectedArea?.color || "from-[#003366] to-[#004080]"} text-white p-6`}>
+            <DialogTitle className="flex items-center gap-3 text-xl">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-white/20">
+                {selectedArea?.icon}
+              </div>
+              <span>{selectedArea?.title}</span>
+            </DialogTitle>
+          </DialogHeader>
+          <DialogClose className="absolute right-4 top-4 rounded-full p-1.5 bg-white/10 text-white hover:bg-white/30 transition-all focus:outline-none focus:ring-2 focus:ring-white/50">
+            <X className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </DialogClose>
+          <div className="p-6 space-y-5">
+            <p className="text-[#003366]/80 text-base">{selectedArea?.description}</p>
+            <div>
+              <h4 className="font-medium text-[#003366] mb-3 text-lg">Research Topics</h4>
+              <ul className="space-y-3 bg-[#f5f8ff] p-4 rounded-lg">
+                {selectedArea?.topics.map((topic, idx) => (
+                  <li key={idx} className="flex items-center text-sm text-[#003366]/80 hover:text-[#003366] transition-colors">
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center mr-3 ${selectedArea?.color || "bg-[#6495ED]"} bg-opacity-20`}>
+                      <ChevronRight className="w-4 h-4 text-[#6495ED]" />
+                    </div>
+                    {topic}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </DialogContentCustom>
+      </Dialog>
     </section>
   )
 }

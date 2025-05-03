@@ -6,17 +6,17 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 
 const slides = [
   {
-    image: "/placeholder.svg?height=600&width=1200",
+    image: "assets/a6.jpg",
     title: "Innovative Teaching Methods",
     description: "Our faculty employs cutting-edge teaching methodologies to provide an engaging learning experience.",
   },
   {
-    image: "/placeholder.svg?height=600&width=1200",
+    image: "assets/a6.jpg",
     title: "State-of-the-Art Facilities",
     description: "Access to modern laboratories and resources to enhance your learning journey.",
   },
   {
-    image: "/placeholder.svg?height=600&width=1200",
+    image: "assets/a6.jpg",
     title: "Industry-Relevant Curriculum",
     description: "Curriculum designed in collaboration with industry experts to meet current market demands.",
   },

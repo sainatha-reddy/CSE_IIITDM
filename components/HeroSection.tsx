@@ -15,6 +15,22 @@ export default function HeroSection() {
   // Sections data
   const sections = [
     {
+      id: "achievements",
+      title: "Achievements",
+      subtitle: "Our Achievements",
+      description:
+        "We partner with leading tech companies to create opportunities for our students and drive innovation through joint research initiatives and technology transfer programs.",
+      image: "/assets/a8.jpg",
+      image1: "/assets/a2.jpg",
+      color: "from-cyan-600 to-blue-700",
+      accent: "bg-cyan-500",
+      stats: [
+        { value: "35+", label: "Startups" },
+        { value: "12", label: "Industry Labs" },
+        { value: "40+", label: "Consultancy Projects" },
+      ],
+    },
+    {
       id: "education",
       title: "Transformative Education",
       subtitle: "Shaping Tomorrow's Tech Innovators",
@@ -44,22 +60,6 @@ export default function HeroSection() {
         { value: "200+", label: "Publications" },
         { value: "₹42Cr", label: "Research Grants" },
         { value: "18", label: "Patents Filed" },
-      ],
-    },
-    {
-      id: "achievements",
-      title: "Achievements",
-      subtitle: "Our Achievements",
-      description:
-        "We partner with leading tech companies to create opportunities for our students and drive innovation through joint research initiatives and technology transfer programs.",
-      image: "/assets/a8.jpg",
-      image1: "/assets/a2.jpg",
-      color: "from-cyan-600 to-blue-700",
-      accent: "bg-cyan-500",
-      stats: [
-        { value: "35+", label: "Startups" },
-        { value: "12", label: "Industry Labs" },
-        { value: "40+", label: "Consultancy Projects" },
       ],
     },
   ]
@@ -248,11 +248,6 @@ export default function HeroSection() {
                         {sections[activeSection].id.charAt(0).toUpperCase() + sections[activeSection].id.slice(1)}
                         <ChevronRight className="ml-1.5 h-4 w-4" />
                       </Button>
-
-                      <Button className="bg-transparent text-white border border-white/30 hover:bg-white/10 rounded-md">
-                        Learn More
-                        <ArrowRight className="ml-1.5 h-4 w-4" />
-                      </Button>
                     </div>
                   </motion.div>
                 </AnimatePresence>
@@ -280,25 +275,7 @@ export default function HeroSection() {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#001233]/90 via-[#001233]/30 to-transparent" />
 
-                      {/* Card content */}
-                      <div className="absolute bottom-0 left-0 right-0 p-6">
-                        <div className="flex items-center space-x-3 mb-4">
-                          <div
-                            className={`w-10 h-10 rounded-md ${sections[activeSection].accent} flex items-center justify-center`}
-                          >
-                            <span className="text-white text-lg font-bold">
-                              {sections[activeSection].id.charAt(0).toUpperCase()}
-                            </span>
-                          </div>
-                          <div className="text-white text-xl font-medium">
-                            {sections[activeSection].id.charAt(0).toUpperCase() + sections[activeSection].id.slice(1)}{" "}
-                            Excellence
-                          </div>
-                        </div>
-
-                        {/* Feature highlights - removed text */}
-                        
-                      </div>
+                     
                     </div>
 
                     {/* Small floating card */}

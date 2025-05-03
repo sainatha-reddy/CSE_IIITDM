@@ -5,7 +5,9 @@ import { motion } from "framer-motion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { FileText, BookOpen, Code, BrainCircuit, Cpu } from "lucide-react"
+import { FileText, BookOpen, Code, BrainCircuit, Cpu, Download, ExternalLink } from "lucide-react"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 
 export default function EntranceSyllabus() {
   const [activeTab, setActiveTab] = useState("core")
@@ -53,7 +55,7 @@ export default function EntranceSyllabus() {
             <CardHeader className="bg-gradient-to-r from-[#003366] to-[#6495ED] text-white">
               <CardTitle className="flex items-center text-2xl">
                 <FileText className="mr-2 h-6 w-6" />
-                Examination Syllabus
+                Examination Syllabus and Sample Question Paper
               </CardTitle>
               <CardDescription className="text-white/80">
                 The examination consists of core computer science topics and specialized areas based on your research
@@ -62,7 +64,7 @@ export default function EntranceSyllabus() {
             </CardHeader>
             <CardContent className="p-6">
               <Tabs defaultValue="core" value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid grid-cols-2 md:grid-cols-4 mb-6">
+                <TabsList className="grid grid-cols-5 mb-6">
                   <TabsTrigger value="core" className="flex items-center">
                     <BookOpen className="w-4 h-4 mr-2" />
                     Core Topics
@@ -78,6 +80,10 @@ export default function EntranceSyllabus() {
                   <TabsTrigger value="systems" className="flex items-center">
                     <Cpu className="w-4 h-4 mr-2" />
                     Systems
+                  </TabsTrigger>
+                  <TabsTrigger value="sample" className="flex items-center">
+                    <FileText className="w-4 h-4 mr-2" />
+                    Sample Questions
                   </TabsTrigger>
                 </TabsList>
 
@@ -208,6 +214,57 @@ export default function EntranceSyllabus() {
                     ]}
                   />
                 </TabsContent>
+
+                <TabsContent value="sample" className="mt-0">
+                  <div className="space-y-6 p-4">
+                    <h3 className="text-xl font-semibold text-[#003366]">Sample Question Papers</h3>
+                    <p className="text-[#003366]/80">
+                      Download sample question papers to familiarize yourself with the format and types of questions asked in the PhD entrance examination.
+                    </p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                      <Card className="border border-[#6495ED]/20">
+                        <CardContent className="p-6 flex flex-col items-center text-center">
+                          <FileText className="h-12 w-12 text-[#6495ED] mb-4" />
+                          <p className="text-sm text-[#003366]/70 mb-4">
+                            Sample question paper I
+                          </p>
+                          <Button variant="outline" className="border-[#6495ED] text-[#003366]" asChild>
+                            <Link href="/doc/sample_paper_1.pdf" download>
+                              <Download className="mr-2 h-4 w-4" />
+                              Download PDF
+                            </Link>
+                          </Button>
+                        </CardContent>
+                      </Card>
+                      
+                      <Card className="border border-[#6495ED]/20">
+                        <CardContent className="p-6 flex flex-col items-center text-center">
+                          <FileText className="h-12 w-12 text-[#6495ED] mb-4" />
+                          <p className="text-sm text-[#003366]/70 mb-4">
+                            Sample question paper II
+                          </p>
+                          <Button variant="outline" className="border-[#6495ED] text-[#003366]" asChild>
+                            <Link href="/doc/sample_paper_2.pdf" download>
+                              <Download className="mr-2 h-4 w-4" />
+                              Download PDF
+                            </Link>
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </div>
+                    
+                    <div className="mt-6 text-center">
+                      <Link 
+                        href="/resources/past-papers" 
+                        className="inline-flex items-center text-[#6495ED] hover:text-[#003366] font-medium"
+                      >
+                        View all past question papers
+                        <ExternalLink className="ml-2 h-4 w-4" />
+                      </Link>
+                    </div>
+                  </div>
+                </TabsContent>
               </Tabs>
             </CardContent>
           </Card>
@@ -217,7 +274,12 @@ export default function EntranceSyllabus() {
   )
 }
 
-function SyllabusAccordion({ items }) {
+interface SyllabusItem {
+  title: string;
+  content: string;
+}
+
+function SyllabusAccordion({ items }: { items: SyllabusItem[] }) {
   return (
     <Accordion type="single" collapsible className="w-full">
       {items.map((item, index) => (

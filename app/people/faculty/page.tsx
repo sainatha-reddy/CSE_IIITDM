@@ -7,8 +7,7 @@ import { Search, User, BookOpen } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
-// import { VisuallyHidden } from "@/components/ui/visually-hidden" 
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 
 import NewsTicker from "@/components/NewsTicker"
 import MainNav from "@/components/MainNav"
@@ -21,6 +20,7 @@ import FacultyDetail from "@/components/faculty/FacultyDetail"
 import FacultyStats from "@/components/faculty/FacultyStats"
 import FacultyHero from "@/components/faculty/FacultyHero"
 import ResearchAreas from "@/components/faculty/ResearchAreas"
+import { Faculty } from "@/components/faculty/FacultyData"
 
 import { facultyData, fetchFacultyData } from "@/components/faculty/FacultyData"
 
@@ -77,7 +77,7 @@ export default function FacultyPage() {
   const [selectedPosition, setSelectedPosition] = useState("all")
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [selectedFaculty, setSelectedFaculty] = useState<any>(null)
+  const [selectedFaculty, setSelectedFaculty] = useState<Faculty | null>(null)
   const [detailedFacultyInfo, setDetailedFacultyInfo] = useState<FacultyInfo | null>(null)
   const [detailLoading, setDetailLoading] = useState(false)
   const [detailError, setDetailError] = useState<string | null>(null)
@@ -513,39 +513,31 @@ export default function FacultyPage() {
         {/* Faculty Detail Modal with API data */}
         <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
           <DialogContent className="max-w-4xl bg-white">
-            <DialogTitle className="sr-only">{dialogTitle}</DialogTitle>
+            <DialogHeader>
+              <DialogTitle>{selectedFaculty?.name}'s Profile</DialogTitle>
+              <DialogDescription className="text-gray-500">
+                View detailed information about the faculty member
+              </DialogDescription>
+            </DialogHeader>
             {detailLoading ? (
-              <div className="py-8 text-center">
-                <div className="animate-spin w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>
-                <p className="text-gray-600">Loading faculty details...</p>
+              <div className="flex justify-center items-center py-8">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-700"></div>
               </div>
-            ) : (
-              <Suspense fallback={<LoadingFallback />}>
-                {detailError && (
-                  <div className="mb-4 px-4 py-2 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800">
-                    <div className="flex items-center">
-                      <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                      </svg>
-                      <p className="text-sm">{detailError}</p>
-                    </div>
-                    {retryCount < 3 && (
-                      <Button 
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleRetry}
-                        className="mt-2 text-yellow-800 hover:text-yellow-900"
-                      >
-                        Try again
-                      </Button>
-                    )}
-                  </div>
+            ) : detailError ? (
+              <div className="text-center py-8">
+                <p className="text-red-500 mb-4">{detailError}</p>
+                {retryCount < 3 && (
+                  <Button variant="outline" onClick={handleRetry}>
+                    Retry
+                  </Button>
                 )}
-                <FacultyDetail 
-                  faculty={selectedFaculty} 
-                  detailedInfo={detailedFacultyInfo} 
-                />
-              </Suspense>
+              </div>
+            ) : detailedFacultyInfo ? (
+              <FacultyDetail faculty={detailedFacultyInfo} />
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-500">No faculty details available.</p>
+              </div>
             )}
           </DialogContent>
         </Dialog>

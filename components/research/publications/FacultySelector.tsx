@@ -2,8 +2,8 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import Image from "next/image"
 import { Search } from "lucide-react"
+import FacultyImage from "@/components/faculty/FacultyImage"
 
 interface Faculty {
   id: number
@@ -83,12 +83,12 @@ export default function FacultySelector({ facultyData, selectedFaculty, onSelect
                 }`}
               >
                 <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-100 flex-shrink-0 mr-3">
-                  <Image
-                    src={faculty.image || "/placeholder.svg"}
+                  <FacultyImage
+                    src={faculty.image}
                     alt={faculty.name}
                     width={32}
                     height={32}
-                    className="object-cover w-full h-full"
+                    className="rounded-full"
                   />
                 </div>
                 <div className="overflow-hidden">

@@ -1,12 +1,12 @@
 "use client"
 
 import type React from "react"
-import Image from "next/image"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChevronRight } from "lucide-react"
 import { researchAreas, getIconByKey } from "./FacultyData"
+import FacultyImage from "./FacultyImage"
 
 interface ResearchAreasProps {
   facultyData: any[]
@@ -62,12 +62,13 @@ const ResearchAreas: React.FC<ResearchAreasProps> = ({
                       {facultyInArea.slice(0, 3).map((faculty, idx) => (
                         <div key={idx} className="flex items-center">
                           <div className="w-6 h-6 rounded-full overflow-hidden mr-1">
-                            <Image
-                              src={faculty.image || "/placeholder.svg"}
+                            <FacultyImage
+                              src={faculty.image}
                               alt={faculty.name}
                               width={24}
                               height={24}
-                              className="object-cover"
+                              className="rounded-full"
+                              autoSize={true}
                             />
                           </div>
                           <span className="text-sm text-gray-700">{faculty.name.split(" ").slice(-1)[0]}</span>

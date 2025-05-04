@@ -7,12 +7,6 @@ interface Publication {
   id: number
   title: string
   authors: string
-  venue: string
-  year: number
-  type: string
-  doi: string
-  citations: number
-  abstract: string
   keywords: string[]
 }
 
@@ -28,10 +22,6 @@ export default function PublicationCard({ publication, onClick }: PublicationCar
     const {
       title = "Untitled Publication",
       authors = "Unknown Authors",
-      venue = "Unknown Venue",
-      year = new Date().getFullYear(),
-      type = "journal",
-      citations = 0,
       keywords = []
     } = publication || {};
 
@@ -53,31 +43,31 @@ export default function PublicationCard({ publication, onClick }: PublicationCar
     return (
       <motion.div
         whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0, 0, 0, 0.1)" }}
-        className="border border-gray-100 rounded-xl p-5 hover:shadow-md transition-shadow bg-white hover:bg-gray-50 cursor-pointer"
-        onClick={onClick}
+        className="border border-gray-100 rounded-xl p-5 hover:shadow-md transition-shadow bg-white hover:bg-gray-50"
+        //onClick={onClick}
       >
         <div className="flex items-start gap-4">
-          <div className="mt-1 flex-shrink-0">{getPublicationTypeIcon(type)}</div>
+          {/* <div className="mt-1 flex-shrink-0">{getPublicationTypeIcon(type)}</div> */}
           <div className="flex-grow">
             <h4 className="text-lg font-medium text-gray-800 mb-2 leading-tight">{title}</h4>
             <p className="text-gray-600 mb-3">{authors}</p>
 
             <div className="flex flex-wrap gap-y-2 gap-x-4 text-sm">
-              <span className="text-gray-500 flex items-center">
+              {/* <span className="text-gray-500 flex items-center">
                 <BookOpen className="h-4 w-4 mr-1 text-gray-400" />
                 {venue}
-              </span>
-              <span className="text-gray-500 flex items-center">
+              </span> */}
+              {/* <span className="text-gray-500 flex items-center">
                 <Calendar className="h-4 w-4 mr-1 text-gray-400" />
                 {year}
-              </span>
-              <span className="text-gray-500 flex items-center">
+              </span> */}
+              {/* <span className="text-gray-500 flex items-center">
                 <Award className="h-4 w-4 mr-1 text-gray-400" />
                 {citations} citations
-              </span>
+              </span> */}
             </div>
 
-            <div className="mt-3 flex flex-wrap gap-2">
+            {/* <div className="mt-3 flex flex-wrap gap-2">
               {Array.isArray(keywords) && keywords.slice(0, 3).map((keyword, idx) => (
                 <span key={idx} className="inline-block px-2 py-1 rounded-full text-xs bg-blue-50 text-blue-600">
                   {keyword}
@@ -88,7 +78,7 @@ export default function PublicationCard({ publication, onClick }: PublicationCar
                   +{keywords.length - 3} more
                 </span>
               )}
-            </div>
+            </div> */}
           </div>
         </div>
       </motion.div>

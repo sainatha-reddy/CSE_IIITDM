@@ -18,13 +18,6 @@ interface Publication {
   id: number
   title: string
   authors: string
-  venue: string
-  year: number
-  type: string
-  doi: string
-  citations: number
-  abstract: string
-  keywords: string[]
 }
 
 interface FacultyMember {
@@ -337,13 +330,16 @@ export default function PublicationsPage() {
                         publications.push({
                           id: pubIdCounter++,
                           title: parts.title || pub.trim(),
+
                           authors: processAuthors(parts.authors),
-                          venue: venue,
-                          year: parts.year ? parseInt(parts.year) : 2023,
-                          type: pubType,
-                          doi: parts.doi || '',
-                          citations: Math.floor(Math.random() * 10), // Still random as citation data isn't available
-                          abstract: 'Abstract not available',
+                         
+                         
+                          // venue: parts.journal || 'Unknown Journal/Conference',
+                          // year: parts.year ? parseInt(parts.year) : 2023,
+                          // type: (parts.journal || '').toLowerCase().includes('journal') ? 'journal' : 'conference',
+                          // doi: parts.doi || '',
+                          // citations: Math.floor(Math.random() * 10), // Still random as citation data isn't available
+                          // abstract: 'Abstract not availab
                           keywords: facultyInfo.schoolName1 
                             ? facultyInfo.schoolName1.split(/[\r\n,]+/).map((i: string) => i.trim()).filter(Boolean)
                             : ['Computer Science']
@@ -368,13 +364,9 @@ export default function PublicationsPage() {
                         publications.push({
                           id: pubIdCounter++,
                           title: parts.title || pub.trim(),
+
                           authors: processAuthors(parts.authors),
-                          venue: venue,
-                          year: parts.year ? parseInt(parts.year) : 2023,
-                          type: pubType,
-                          doi: parts.doi || '',
-                          citations: Math.floor(Math.random() * 10), // Still random as citation data isn't available
-                          abstract: 'Abstract not available',
+      
                           keywords: facultyInfo.schoolName1 
                             ? facultyInfo.schoolName1.split(/[\r\n,]+/).map((i: string) => i.trim()).filter(Boolean) 
                             : ['Computer Science']
@@ -491,13 +483,14 @@ export default function PublicationsPage() {
             
             // Improved image URL construction with multiple fallbacks
             let imageUrl = "/placeholder.svg";
-            
+            //console.log(faculty)
             // First try localimg from our IIITDM server
-            if (faculty.localimg) {
-              imageUrl = `https://old.iiitdm.ac.in/img/faculty/${faculty.localimg}`;
+            if (faculty.imageUrl && faculty.imageUrl !== 'null' && faculty.imageUrl.startsWith('https')) {
+              console.log('Faculty image URL:', faculty.imageUrl)
+              imageUrl = faculty.imageUrl;
             } 
             // Then try the pic field if it exists and is a valid URL
-            else if (faculty.pic && faculty.pic !== 'null' && faculty.pic.startsWith('http')) {
+            else if (faculty.pic && faculty.pic !== 'null' && faculty.pic.startsWith('https')) {
               imageUrl = faculty.pic;
             }
             
@@ -506,7 +499,7 @@ export default function PublicationsPage() {
               name: faculty.nickname || 'Unknown Faculty',
               title: faculty.desig || 'Faculty',
               area: faculty.schoolName1 || 'Computer Science',
-              image: imageUrl,
+              image: faculty.image,
               publications,
               publicationCount: publications.length,
               email: faculty.email // Store email for potential later use
@@ -543,38 +536,23 @@ export default function PublicationsPage() {
           {
             id: 101,
             title: "Recent Advances in Image Processing Techniques",
+
             authors: processAuthors("Masilamani V, K. Patel"),
-            venue: "IEEE Transactions on Image Processing",
-            year: 2022,
-            type: "journal",
-            doi: "10.1109/TIP.2022.123456",
-            citations: 15,
-            abstract: "This paper reviews recent advances in the field of image processing.",
-            keywords: ["Image Processing", "Biometrics", "Pattern Recognition"]
+         
+
           },
           {
             id: 102,
             title: "Biometric Authentication Systems: A Survey",
+
             authors: processAuthors("Masilamani V, S. Kumar"),
-            venue: "International Conference on Security and Privacy",
-            year: 2021,
-            type: "conference",
-            doi: "10.1109/ICSP.2021.987654",
-            citations: 8,
-            abstract: "This paper presents a survey of biometric authentication systems.",
-            keywords: ["Biometrics", "Authentication", "Security"]
           },
           {
             id: 103,
             title: "Computer Vision and Image Processing: Fundamentals and Applications",
             authors: processAuthors("Masilamani V, R. Jain"),
-            venue: "Academic Press",
-            year: 2020,
-            type: "book",
-            doi: "10.1016/B978-0-12-123456-0.00001-0",
-            citations: 25,
-            abstract: "This comprehensive textbook covers the foundations and applications of computer vision and image processing techniques.",
-            keywords: ["Computer Vision", "Image Processing", "Machine Learning"]
+            
+
           }
         ],
         publicationCount: 3
@@ -589,38 +567,21 @@ export default function PublicationsPage() {
           {
             id: 201,
             title: "High Performance Computing Architectures for Edge Computing",
+
             authors: processAuthors("Noor Mahammad, R. Singh"),
-            venue: "IEEE Transactions on Computers",
-            year: 2022,
-            type: "journal",
-            doi: "10.1109/TC.2022.246810",
-            citations: 12,
-            abstract: "This paper presents novel architectures for edge computing.",
-            keywords: ["High Performance Computing", "Edge Computing", "Architectures"]
+
           },
           {
             id: 202,
             title: "VLSI Design Optimization for IoT Devices",
+
             authors: processAuthors("Noor Mahammad, P. Reddy"),
-            venue: "ACM International Symposium on Low Power Electronics and Design",
-            year: 2021,
-            type: "conference",
-            doi: "10.1145/ISLPED.2021.135790",
-            citations: 7,
-            abstract: "This paper discusses VLSI design optimization for IoT devices.",
-            keywords: ["VLSI Design", "IoT", "Low Power Electronics"]
           },
           {
             id: 203,
             title: "Advances in Computer Architecture Design: Chapter 5 - Network-on-Chip Architectures",
             authors: processAuthors("Noor Mahammad, J. Lee, S. Patel"),
-            venue: "Springer Publishing",
-            year: 2023,
-            type: "chapter",
-            doi: "10.1007/978-3-030-12345-6_5",
-            citations: 3,
-            abstract: "This book chapter explores recent advances in Network-on-Chip architectures for modern computing systems.",
-            keywords: ["Computer Architecture", "NoC", "System Design"]
+
           }
         ],
         publicationCount: 3
@@ -655,9 +616,8 @@ export default function PublicationsPage() {
       const matchesSearch =
         searchQuery === "" ||
         pub.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        pub.authors.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        pub.venue.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        pub.keywords.some((keyword) => keyword.toLowerCase().includes(searchQuery.toLowerCase()))
+
+        pub.authors.toLowerCase().includes(searchQuery.toLowerCase())
 
       return matchesSearch
     }) || []
@@ -779,7 +739,7 @@ export default function PublicationsPage() {
                                 </svg>
                                 {faculty?.publications.length} Publications
                               </span>
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700">
+                              {/* <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700">
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   className="h-3 w-3 mr-1"
@@ -795,8 +755,8 @@ export default function PublicationsPage() {
                                   />
                                 </svg>
                                 {faculty?.publications.reduce((acc, pub) => acc + pub.citations, 0)} Citations
-                              </span>
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-50 text-purple-700">
+                              </span> */}
+                              {/* <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-50 text-purple-700">
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   className="h-3 w-3 mr-1"
@@ -811,9 +771,9 @@ export default function PublicationsPage() {
                                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                                   />
                                 </svg>
-                                {Math.min(...(faculty?.publications.map((p) => p.year) || [new Date().getFullYear()]))} -{" "}
-                                {Math.max(...(faculty?.publications.map((p) => p.year) || [new Date().getFullYear()]))}
-                              </span>
+                                {{Math.min(...(faculty?.publications.map((p) => p.year) || [new Date().getFullYear()]))} -{" "}
+                                {Math.max(...(faculty?.publications.map((p) => p.year) || [new Date().getFullYear()]))} }
+                              </span> */}
                             </div>
                             
                             <div className="mt-4">

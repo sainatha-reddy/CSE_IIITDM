@@ -12,7 +12,7 @@ const resources = [
     title: "Curriculum",
     icon: <BookOpen className="w-8 h-8" />,
     description: "Comprehensive curriculum designed to cover fundamental and advanced topics in computer science.",
-    link: "/teaching/curriculum",
+    link: "https://iiitdm.ac.in/students/existing-students/curriculum-info",
     category: "core",
   },
   {
@@ -21,20 +21,6 @@ const resources = [
     description: "Detailed lecture notes and study materials for all courses offered by the department.",
     link: "/teaching/lecture-notes",
     category: "materials",
-  },
-  {
-    title: "Time Table",
-    icon: <Calendar className="w-8 h-8" />,
-    description: "Current semester schedule for all courses, labs, and other academic activities.",
-    link: "/teaching/time-table",
-    category: "schedule",
-  },
-  {
-    title: "Online Electives",
-    icon: <Lightbulb className="w-8 h-8" />,
-    description: "Additional online courses and electives to supplement the core curriculum.",
-    link: "/teaching/online-electives",
-    category: "electives",
   },
   {
     title: "Best Projects",
@@ -47,28 +33,14 @@ const resources = [
     title: "Research Opportunities",
     icon: <GraduationCap className="w-8 h-8" />,
     description: "Information about research opportunities available for undergraduate and graduate students.",
-    link: "/research",
+    link: "/research/overview",
     category: "research",
-  },
-  {
-    title: "Digital Library",
-    icon: <BookOpen className="w-8 h-8" />,
-    description: "Access to digital resources, journals, and e-books to support learning and research.",
-    link: "/teaching/digital-library",
-    category: "materials",
-  },
-  {
-    title: "Lab Manuals",
-    icon: <FileText className="w-8 h-8" />,
-    description: "Comprehensive lab manuals with step-by-step instructions for practical sessions.",
-    link: "/teaching/lab-manuals",
-    category: "materials",
   },
   {
     title: "Academic Calendar",
     icon: <Calendar className="w-8 h-8" />,
     description: "Important dates for the academic year including exams, holidays, and events.",
-    link: "/teaching/academic-calendar",
+    link: "https://iiitdm.ac.in/students/existing-students/academic-calendar",
     category: "schedule",
   },
 ]
@@ -201,7 +173,7 @@ export default function TeachingResources() {
                     </div>
                     <h3 className="text-xl font-bold text-[#003366] mb-2">{resource.title}</h3>
                     <p className="text-gray-600 flex-grow">{resource.description}</p>
-                    <Link href={resource.link}>
+                    <Link href={resource.link} target="_blank">
                       <Button
                         variant="ghost"
                         className="mt-4 text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-0 flex items-center group"

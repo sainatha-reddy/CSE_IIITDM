@@ -101,10 +101,10 @@ export default function Resources() {
                     className="text-[#003366] hover:text-[#6495ED] hover:bg-[#6495ED]/10 p-0 flex items-center"
                     asChild
                   >
-                    <a href={resource.link}>
+                    {/* <a href={resource.link}>
                       Learn more
                       <ArrowRight className="ml-2 h-4 w-4" />
-                    </a>
+                    </a> */}
                   </Button>
                 </CardContent>
               </Card>
